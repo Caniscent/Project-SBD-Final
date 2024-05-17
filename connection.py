@@ -7,13 +7,13 @@ try:
     cursor = connection.cursor()
     cursor.execute("SELECT version();")
     record = cursor.fetchone()
-    print(f"\ntersambung ke {record}\n")
+    print(f"\ntersambung ke {record}")
 
 except(Exception, psycopg2.Error) as err:
-    print(f"\nError coy! nih lognya: {err}\n")
+    print(f"\nError coy! nih lognya: {err}")
 
 finally:
     if connection:
         cursor.close()
         connection.close()
-        print(f"\nkoneksi ditutup")
+        print(f"koneksi ditutup")
