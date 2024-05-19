@@ -10,7 +10,48 @@ def read_data(cur,select = "*", table = "", orderby = ""):
     data = cur.fetchall()
     for i in data:
         print(i)
+    cur.close()
+    conn.close()
 
+    # Penulisan values menggunakan list. Ex: Values = ["data1",data2, "data3"]
+def create_data(cur, table,values):
+    column = column_data(cur, table)
+
+    query_values = ""
+    for i in values:
+        if values == str():
+            i = f"'{values}',"
+        elif values == int() or values == float():
+            i = f"{values},"
+        else:
+            continue
+        query_values += i
+    # CONTOH HASIL AKHIR PENULISAN:
+    # f"INSERT INTO mata_kuliah(nama_mata_kuliah, sks, semester_id) values ('{nama_mata_kuliah}', {sks}, {semester_id})"
+    query = f"INSERT INTO {table}({",".join(column)}) VALUES({query_values})"
+    cur.execute(query,tuple(values))
+    # CONTOH HASIL AKHIR PENULISAN:
+    # cur.execute(query,(nama_mata_kuliah, sks, semester_id))
+    conn.commit()
+    cur.close()
+    conn.close()
+
+def update_data():
+    pass
+
+def delete_data():
+    pass
+
+def column_data(cur, table):
+    column_name = list()
+    query_column= f"SELECT column_name FROM information_schema.columns WHERE table_name = '{table}'"
+    cur.execute(query_column)
+    data2 = cur.fetchall()
+    for i in data2:
+        column_name.extend(i)
+    return column_name
+
+
+# Mains
 conn, cur = condb.connect()
-read_data(cur,select="id_tipe_kamar, harga",table="tipe_kamar",orderby="harga")
-condb.close(conn, cur)
+read_data(cur,table="tipe_kamar")

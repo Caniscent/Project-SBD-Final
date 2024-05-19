@@ -8,10 +8,6 @@ def connect():
         return conn, cur
     except(Exception, psycopg2.Error) as err:
         print(f"\nError coy! nih lognya: {err}")
-
-def close(cur,conn):
-    cur.close()
-    conn.close()
     
 
 # try:
