@@ -27,7 +27,7 @@ def create_data(cur, table,values):
             continue
         query_values += i
 
-    query = f"INSERT INTO {table}{tuple(column)}VALUES({query_values})"
+    query = f"INSERT INTO {table}({",".join(column)})VALUES({query_values})"
     cur.execute(query,tuple(values))
     conn.commit()
     cur.close()
