@@ -26,12 +26,9 @@ def create_data(cur, table,values):
         else:
             continue
         query_values += i
-    # CONTOH HASIL AKHIR PENULISAN:
-    # f"INSERT INTO mata_kuliah(nama_mata_kuliah, sks, semester_id) values ('{nama_mata_kuliah}', {sks}, {semester_id})"
-    query = f"INSERT INTO {table}({",".join(column)}) VALUES({query_values})"
+
+    query = f"INSERT INTO {table}{tuple(column)}VALUES({query_values})"
     cur.execute(query,tuple(values))
-    # CONTOH HASIL AKHIR PENULISAN:
-    # cur.execute(query,(nama_mata_kuliah, sks, semester_id))
     conn.commit()
     cur.close()
     conn.close()
