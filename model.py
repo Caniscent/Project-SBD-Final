@@ -81,7 +81,15 @@ def update_data(table,idcolomn,values):
     conn.close()
 
 def delete_data(table,idcolomn):
-    pass
+    conn, cur = connection.connect()
+    column = column_data(table=table,idenable=1)
+
+    query = f"DELETE FROM {table} WHERE {column[0]} = {idcolomn}"
+
+    cur.execute(query)
+    conn.commit()
+    cur.close()
+    conn.close()
 
 def column_data(table,idenable=0):
     conn, cur = connection.connect()
@@ -125,6 +133,26 @@ def column_data(table,idenable=0):
 # jenis_fasilitas = int(input("Jenis Fasilitas(1/2): ") or read[2])
 # values = [nama_fasilitas,jenis_fasilitas]
 # update_data(table=table,idcolomn=id_colomn,values=values)
+# read = read_data(table=table)
+# for i in read:
+#     print(i)
+
+# Delete Data
+# table = "fasilitas"
+# read = read_data(table=table)
+# for i in read:
+#     print(i)
+# id_column = int(input(f"pilih ID {table} yang akan dihapus: "))
+# read_column = read_data(table=table,columnid=id_column)
+# print(f"ID Fasilitas: {read_column[0]}")
+# print(f"Nama Fasilitas: {read_column[1]}")
+# print(f"Jenis Fasilitas: {read_column[2]}")
+# user = input("Yakin ingin menghapus?(Y/n) ")
+# if user.lower() == 'y':
+#     delete_data(table=table,idcolomn=id_column)
+# else:
+#     print("Data tidak jadi dihapus")
+
 # read = read_data(table=table)
 # for i in read:
 #     print(i)
