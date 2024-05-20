@@ -34,37 +34,34 @@ def aksi_admin():
                 model.create_data(table = "users", values= values)
 
             case '3':
-                # update = f"UPDATE mata_kuliah SET nama_mata_kuliah = %s, sks = %s, semester_id = %s"
-                # read_matkul(cursor=cursor)
+                table = "users"
+                data = model.read_data(table=table)
+                for i in data:
+                    print(i)
 
-                id_users = input("Masukkan Id dari Users yang ingin di update: ")
-                select_query = f"SELECT * FROM users WHERE id_users = %s"
-                connection.cursor.execute(query=select_query, vars=(id_users))
-                data = connection.cursor.fetchone()
+                id_column = int(input("Masukkan ID Users: "))
+                data_column = model.read_data(table=table,columnid=str(id_column))
+                print(f"""Data saat ini:")
+ID Users: {data_column[0]},
+Nama Lengkap: {data_column[1]},
+Username: {data_column[2]},
+Password: {data_column[3]},
+No Telepon Users: {data_column[4]},
+Jenis Users Id: {data_column[5]}
+                """)
 
-                if data:
-                    print("Data saat ini:")
-                    print(f"Id users saat ini: {data[0]}")
-                    print(f"Nama users saat ini: {data[1]}")
-                    print(f"Username saat ini: {data[2]}")
-                    print(f"Password saat ini: {data[3]}")
-                    print(f"Nomor telepon saat ini: {data[4]}")
-                    print(f"Jenis user saat ini: {data[5]}")
-
-                nama_users = input("Masukkan nama lengkap: ") or data[1]
-                username = input("Masukkan username: ") or data[2]
-                password = input("Masukkan password: ") or data[3]
-                no_telepon_users = input("Masukkan nomor telepon: ") or data[4]
-                jenis_users_id = int(input("Masukkan jenis users: ")) or data[5]
-
-                query_update = f"UPDATE users SET nama_users = %s, username = %s, password = %s WHERE id_users = %s"
-                connection.cursor.execute(query=query_update, vars=(nama_users, username, password, no_telepon_users, jenis_users_id))
-
-
-                print(f"Total baris yang diubah: {connection.cursor.rowcount}")
-                connection.conn.commit()
-                connection.cursor.close()
-                connection.conn.close()
+                print('-'*30)
+                nama_users = input("Nama Users: ") or data[1]
+                username = input("Username: ") or data[2]
+                password = input("Password: ") or data[3]
+                no_telepon_users = input("Nomor Telepon: ") or data[4]
+                print("1. Owner\n2. Admin")
+                jenis_users_id = int(input("Jenis Fasilitas(1/2): ") or data[5])
+                values = [nama_users,username,password,no_telepon_users,jenis_users_id]
+                model.update_data(table=table,idcolomn=id_column,values=values)
+                read = model.read_data(table=table)
+                for i in read:
+                    print(i)
             
             case '4':
                 table = "users"
@@ -74,9 +71,9 @@ def aksi_admin():
 
                 id_column = int(input(f"Pilih ID {table} yang akan dihapus: "))
                 data_column = model.read_data(table=table,columnid=id_column)
-                print(f"""ID Fasilitas: {data_column[0]},
-                Nama Fasilitas: {data_column[1]}
-                Jenis Fasilitas: {data_column[2]}
+                print(f"""ID Users: {data_column[0]},
+Nama Lengkap: {data_column[1]},
+Username: {data_column[2]}
                 """)
                 user = input("Yakin ingin menghapus?(Y/n) ")
                 if user.lower() == 'y':
