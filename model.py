@@ -30,7 +30,10 @@ def create_data(table,values):
             continue
         query_values.append(result)
 
-    query = f"INSERT INTO {table}({",".join(column)})VALUES({",".join(query_values)})"
+    query = f"""
+    INSERT INTO {table} ({",".join(column)})
+    VALUES ({",".join(query_values)})
+    """
     # return query
     cur.execute(query,tuple(values))
     conn.commit()
