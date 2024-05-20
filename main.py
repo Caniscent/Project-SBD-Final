@@ -1,6 +1,9 @@
 import core
+import login
 import data_admin
 
+core.clear()
+login.login()
 
 def mainmenu():
     while True:
@@ -27,8 +30,7 @@ def mainmenu():
                 user = input(f"| > ")
                 if user.lower() == 'y' or user.lower() == 'yes':
                     core.clear()
-                    continue
-                    #login.login() 
+                    login.login() 
                 else:
                     core.clear()
             case '0':

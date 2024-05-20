@@ -1,6 +1,7 @@
 import connection
 import model
 import core
+import main
 
 
 def aksi_admin():
@@ -64,3 +65,8 @@ def aksi_admin():
                 connection.conn.commit()
                 connection.cursor.close()
                 connection.conn.close()
+            
+            case '9':
+                core.clear()
+                main.mainmenu() 
+                
