@@ -1,7 +1,7 @@
 import core
 import login
 import data_admin
-
+import fasilitas
 
 def mainmenu():
     while True:
@@ -21,6 +21,8 @@ def mainmenu():
         match menu:
             case '1':
                 data_admin.aksi_admin()
+            case '4':
+                fasilitas.aksi_fasilitas()
             case '9':
                 print('+' + '='*83 + '+')
                 print('|' + '[ NOTICE ]'.center(83) + '|')
