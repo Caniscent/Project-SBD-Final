@@ -1,7 +1,8 @@
 import psycopg2
-import connection as condb
+import connection
 
-def read_data(cur,select = "*", table = "", orderby = ""):
+def read_data(select = "*", table = "", orderby = ""):
+    conn, cur = connection.connect()
     if orderby != "":
         query = f"SELECT {select} FROM {table} ORDER BY {orderby}"
     else:
@@ -13,7 +14,8 @@ def read_data(cur,select = "*", table = "", orderby = ""):
 
     # Penulisan values menggunakan list. Ex: Values = ["data1",data2, "data3"]
     # Harus urut sesuai kolom di database
-def create_data(cur, table,values):
+def create_data(table,values):
+    conn, cur = connection.connect()
     column = column_data(cur=cur, table=table)
 
     query_values = []
@@ -37,7 +39,8 @@ def update_data():
 def delete_data():
     pass
 
-def column_data(cur, table,idenable=0):
+def column_data(table,idenable=0):
+    conn, cur = connection.connect()
     column_name = []
     query_column= f"SELECT column_name FROM information_schema.columns WHERE table_name = '{table}'"
     cur.execute(query_column)
@@ -54,13 +57,13 @@ def column_data(cur, table,idenable=0):
 
 
 # Menambah data
-conn, cur = condb.connect()
+conn, cur = connection.connect()
 # print("Data Saat ini: ")
-# read_data(cur,table="fasilitas")
+# read_data(table="fasilitas")
 # new_nama_fasilitas = str(input("Nama Fasilitas: "))
 # new_id_jenis_fasilitas = int(input("ID Fasilitas(1/2): "))
 # values = [new_nama_fasilitas,new_id_jenis_fasilitas]
 # create_data(cur,table = "fasilitas", values= values)
-read_data(cur,table="fasilitas")
+read_data(table="fasilitas")
 cur.close()
 conn.close()
