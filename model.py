@@ -1,17 +1,25 @@
 import psycopg2
 import connection
 
-def read_data(select = "*", table = "", orderby = ""):
+def read_data(select = "*", table = "",columnid="" ,orderby = ""):
     conn, cur = connection.connect()
-    if orderby != "":
-        query = f"SELECT {select} FROM {table} ORDER BY {orderby}"
+    column = column_data(table=table, idenable=1)
+    if columnid != "":
+        query = f"SELECT {select} FROM {table} WHERE {column[0]} = {columnid}"
+        cur.execute(query)
+        data = cur.fetchone()
+        result = data
     else:
-        query = f"SELECT {select} FROM {table}"
-    cur.execute(query)
-    data = cur.fetchall()
-    result = []
-    for i in data:
-        result.append(i)
+        if orderby != "":
+            query = f"SELECT {select} FROM {table} ORDER BY {orderby}"
+        else:
+            query = f"SELECT {select} FROM {table}"
+        cur.execute(query)
+        data = cur.fetchall()
+        result = []
+        for i in data:
+            result.append(i)
+
     cur.close()
     conn.close()
     return result
@@ -24,10 +32,12 @@ def create_data(table,values):
 
     query_values = []
     for i in values:
-        if isinstance(i,str):
+        if isinstance(i,str) and i != "":
             result = f"'{i}'"
         elif isinstance(i,int) or isinstance(i,float):
             result = f"{i}"
+        elif i == None:
+            result = f"NULL"
         else:
             continue
         query_values.append(result)
@@ -42,17 +52,18 @@ def create_data(table,values):
     cur.close()
     conn.close()
 
-def update_data(table,values):
+def update_data(table,idcolomn,values):
     conn, cur = connection.connect()
-    column = column_data(table=table)
-
-
+    column = column_data(table=table,idenable=1)
+    data = []
+    i = 0
     for x in range(len(column)):
         for y in values:
-            dump = f"{x} = {y}"
-            
-
-    query = f"UPDATE {table} SET {table}"
+            dump = f"{x[i+1]} = {y[i]}"
+            data.append(dump)
+    
+    query = f"UPDATE {table} SET {",".join(data)} WHERE {column[0]} = {idcolomn}"
+    cur.execute(query,tuple(values))
     cur.close()
     conn.close()
 
@@ -83,5 +94,12 @@ def column_data(table,idenable=0):
 # values = [new_nama_fasilitas,new_id_jenis_fasilitas]
 # create_data(table = "fasilitas", values= values)
 # read_data(table="fasilitas")
-a = read_data(table="users")
-print(a)
+
+#Updata data
+# id_colomn = int(input("Masukkan ID Fasilitas: "))
+# read = read_data(table="fasilitas",columnid=str(id_colomn))
+read = read_data(table="fasilitas")
+print(read)
+exit()
+print("Data saat ini:")
+id_fasilitas = input("ID Fasilitas: ") or read[0]
