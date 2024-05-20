@@ -57,18 +57,39 @@ def update_data(table,idcolomn,values):
     column = column_data(table=table,idenable=1)
     data = []
     i = 0
-    for x in range(len(column)):
+
+    for x in range(len(column)-1):
+        query_values = []
         for y in values:
-            dump = f"{x[i+1]} = {y[i]}"
-            data.append(dump)
+            if isinstance(y,str) and y != "":
+                result = f"'{y}'"
+            elif isinstance(y,int) or isinstance(y,float):
+                result = f"{y}"
+            elif y == None:
+                result = f"NULL"
+            else:
+                continue
+            query_values.append(result)
+        dump = f"{column[i+1]} = {query_values[i]}"
+        data.append(dump)
+        i += 1
     
     query = f"UPDATE {table} SET {",".join(data)} WHERE {column[0]} = {idcolomn}"
     cur.execute(query,tuple(values))
+    conn.commit()
     cur.close()
     conn.close()
 
-def delete_data():
-    pass
+def delete_data(table,idcolomn):
+    conn, cur = connection.connect()
+    column = column_data(table=table,idenable=1)
+
+    query = f"DELETE FROM {table} WHERE {column[0]} = {idcolomn}"
+
+    cur.execute(query)
+    conn.commit()
+    cur.close()
+    conn.close()
 
 def column_data(table,idenable=0):
     conn, cur = connection.connect()
@@ -96,10 +117,42 @@ def column_data(table,idenable=0):
 # read_data(table="fasilitas")
 
 #Updata data
+# table = "fasilitas"
+# read = read_data(table=table)
+# for i in read:
+#     print(i)
 # id_colomn = int(input("Masukkan ID Fasilitas: "))
-# read = read_data(table="fasilitas",columnid=str(id_colomn))
-read = read_data(table="fasilitas")
-print(read)
-exit()
-print("Data saat ini:")
-id_fasilitas = input("ID Fasilitas: ") or read[0]
+# read = read_data(table=table,columnid=str(id_colomn))
+# print("Data saat ini:")
+# print(f"ID Fasilitas: {read[0]}")
+# print(f"Nama Fasilitas: {read[1]}")
+# print(f"Jenis Fasilitas: {read[2]}")
+# print('-'*30)
+# nama_fasilitas = input("Nama Fasilitas: ") or read[1]
+# print("1. Umum\n2. Kamar")
+# jenis_fasilitas = int(input("Jenis Fasilitas(1/2): ") or read[2])
+# values = [nama_fasilitas,jenis_fasilitas]
+# update_data(table=table,idcolomn=id_colomn,values=values)
+# read = read_data(table=table)
+# for i in read:
+#     print(i)
+
+# Delete Data
+# table = "fasilitas"
+# read = read_data(table=table)
+# for i in read:
+#     print(i)
+# id_column = int(input(f"pilih ID {table} yang akan dihapus: "))
+# read_column = read_data(table=table,columnid=id_column)
+# print(f"ID Fasilitas: {read_column[0]}")
+# print(f"Nama Fasilitas: {read_column[1]}")
+# print(f"Jenis Fasilitas: {read_column[2]}")
+# user = input("Yakin ingin menghapus?(Y/n) ")
+# if user.lower() == 'y':
+#     delete_data(table=table,idcolomn=id_column)
+# else:
+#     print("Data tidak jadi dihapus")
+
+# read = read_data(table=table)
+# for i in read:
+#     print(i)
