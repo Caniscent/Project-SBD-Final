@@ -13,22 +13,21 @@ def read_data(cur,select = "*", table = "", orderby = ""):
 
     # Penulisan values menggunakan list. Ex: Values = ["data1",data2, "data3"]
 def create_data(cur, table,values):
-    column = column_data(cur, table,idenable=0)
+    column = column_data(cur=cur, table=table)
 
-    query_values = list()
+    query_values = []
     for i in values:
-        if values == str():
-            i = f"'{values}'"
-        elif values == int() or values == float():
-            i = f"values"
+        if isinstance(i,str):
+            result = f"'{i}'"
+        elif isinstance(i,int) or isinstance(i,float):
+            result = f"{i}"
         else:
             continue
-        query_values.extend(i)
+        query_values.append(result)
 
     query = f"INSERT INTO {table}({",".join(column)})VALUES({",".join(query_values)})"
-    cur.execute(query,(values))
-    conn.commit()
-    print("Data berhasil ditambahkan!")
+    # return query
+    cur.execute(query,tuple(values))
 
 def update_data():
     pass
@@ -36,17 +35,18 @@ def update_data():
 def delete_data():
     pass
 
-def column_data(cur, table, idenable = 0):
-    column_name = list()
+def column_data(cur, table,idenable=0):
+    column_name = []
     query_column= f"SELECT column_name FROM information_schema.columns WHERE table_name = '{table}'"
     cur.execute(query_column)
-    data2 = cur.fetchall()
+    data = cur.fetchall()
     if idenable == 1:
-        for i in data2[1:len(data2)]:
+        for i in data:
             column_name.extend(i)
     else:
-        for i in data2:
+        for i in data[1:]:
             column_name.extend(i)
+    column_name = column_name[::-1]
     return column_name
     
 
@@ -55,17 +55,11 @@ def column_data(cur, table, idenable = 0):
 conn, cur = condb.connect()
 print("Data Saat ini: ")
 read_data(cur,table="fasilitas")
-new_nama_fasilitas = input("Nama Fasilitas: ")
+new_nama_fasilitas = str(input("Nama Fasilitas: "))
 new_id_jenis_fasilitas = int(input("ID Fasilitas(1/2): "))
 values = [new_nama_fasilitas,new_id_jenis_fasilitas]
 create_data(cur,table = "fasilitas", values= values)
+query_new_data = create_data(cur,table = "fasilitas", values= values)
 read_data(cur,table="fasilitas")
-
-# a = 2
-# b = "Halo"
-# text = f"{a}"
-# print(text)
-# print(type(text))
-
 cur.close()
 conn.close()
