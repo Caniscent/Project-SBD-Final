@@ -2,6 +2,7 @@ import connection
 import model
 import core
 import main
+import hashlib
 
 
 def aksi_admin():
@@ -17,16 +18,19 @@ def aksi_admin():
         admin = input("Masukkan nomor: ")
         match admin:
             case '1':
-                model.read_data(table="users",orderby="id_users")
-
+                kon = model.read_data(table="users",orderby="id_users")
+                for i in kon:
+                    print(i)
+                req = input("Klik ENTER untuk melanjutkan...")
+                core.clear()
             case '2':
-                nik_users = int(input("Masukkan NIK: "))
                 nama_users = input("Masukkan Nama Lengkap: ")
                 username = input("Masukkan Username: ")
                 password = input("Masukkan Password: ")
                 no_telepon_users = input("Masukkan Nomor Telepon: ")
                 jenis_users = int(input("Masukkan Role User(1=Owner/2=Admin): "))
-                values = [nik_users,nama_users,username,password,no_telepon_users,jenis_users]
+                hashed_password = hashlib.md5(password.encode()).hexdigest()
+                values = [nama_users,username,hashed_password,no_telepon_users,jenis_users]
                 model.create_data(table = "users", values= values)
 
             case '3':
@@ -63,15 +67,26 @@ def aksi_admin():
                 connection.conn.close()
             
             case '4':
-                connection.read_users(cursor=connection.cursor)
-                id_users = input("Masukkan Id Users yang ingin di hapus: ")
-                query_delete = f"DELETE FROM users WHERE id_users = {id_users}"
-                connection.cursor.execute(query=query_delete)
+                table = "users"
+                data = model.read_data(table=table)
+                for i in data:
+                    print(i)
 
-                print(f"Total baris yang diubah: {connection.cursor.rowcount}")
-                connection.conn.commit()
-                connection.cursor.close()
-                connection.conn.close()
+                id_column = int(input(f"Pilih ID {table} yang akan dihapus: "))
+                data_column = model.read_data(table=table,columnid=id_column)
+                print(f"""ID Fasilitas: {data_column[0]},
+                Nama Fasilitas: {data_column[1]}
+                Jenis Fasilitas: {data_column[2]}
+                """)
+                user = input("Yakin ingin menghapus?(Y/n) ")
+                if user.lower() == 'y':
+                    model.delete_data(table=table,idcolumn=id_column)
+                else:
+                    print("Data tidak jadi dihapus")
+
+                read = model.read_data(table=table)
+                for i in read:
+                    print(i)
             
             case '9':
                 core.clear()

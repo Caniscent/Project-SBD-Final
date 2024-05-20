@@ -2,9 +2,10 @@ import core
 import login
 import data_admin
 
+core.clear()
+login.login()
+
 def mainmenu():
-    core.clear()
-    login.login()
     while True:
         core.clear()
         print('''

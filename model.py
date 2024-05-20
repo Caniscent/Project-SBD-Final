@@ -74,17 +74,20 @@ def update_data(table,idcolomn,values):
         data.append(dump)
         i += 1
     
-    query = f"UPDATE {table} SET {",".join(data)} WHERE {column[0]} = {idcolomn}"
+    query = f"""
+    UPDATE {table} SET {",".join(data)} 
+    WHERE {column[0]} = {idcolomn}
+    """
     cur.execute(query,tuple(values))
     conn.commit()
     cur.close()
     conn.close()
 
-def delete_data(table,idcolomn):
+def delete_data(table,idcolumn):
     conn, cur = connection.connect()
     column = column_data(table=table,idenable=1)
 
-    query = f"DELETE FROM {table} WHERE {column[0]} = {idcolomn}"
+    query = f"DELETE FROM {table} WHERE {column[0]} = {idcolumn}"
 
     cur.execute(query)
     conn.commit()
