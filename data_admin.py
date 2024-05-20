@@ -1,5 +1,5 @@
 import connection
-
+import model
 
 
 def aksi_admin():
@@ -12,13 +12,7 @@ def aksi_admin():
     admin = input("Masukkan nomor: ")
     match admin:
         case '1':
-            query = "SELECT * FROM users"
-            connection.cursor.execute(query=query)
-            data = connection.cursor.fetchall()
-            for i in data:
-                print(i)
-            connection.cursor.close()
-            connection.conn.close()
+           model.read_data(table="users",orderby="id_users")
 
         case '2':
             total_input = int(input(f"Berapa data yang ingin ditambahkan?: "))
