@@ -12,6 +12,7 @@ def read_data(cur,select = "*", table = "", orderby = ""):
         print(i)
 
     # Penulisan values menggunakan list. Ex: Values = ["data1",data2, "data3"]
+    # Harus urut sesuai kolom di database
 def create_data(cur, table,values):
     column = column_data(cur=cur, table=table)
 
@@ -28,6 +29,7 @@ def create_data(cur, table,values):
     query = f"INSERT INTO {table}({",".join(column)})VALUES({",".join(query_values)})"
     # return query
     cur.execute(query,tuple(values))
+    conn.commit()
 
 def update_data():
     pass
@@ -53,13 +55,12 @@ def column_data(cur, table,idenable=0):
 
 # Menambah data
 conn, cur = condb.connect()
-print("Data Saat ini: ")
-read_data(cur,table="fasilitas")
-new_nama_fasilitas = str(input("Nama Fasilitas: "))
-new_id_jenis_fasilitas = int(input("ID Fasilitas(1/2): "))
-values = [new_nama_fasilitas,new_id_jenis_fasilitas]
-create_data(cur,table = "fasilitas", values= values)
-query_new_data = create_data(cur,table = "fasilitas", values= values)
+# print("Data Saat ini: ")
+# read_data(cur,table="fasilitas")
+# new_nama_fasilitas = str(input("Nama Fasilitas: "))
+# new_id_jenis_fasilitas = int(input("ID Fasilitas(1/2): "))
+# values = [new_nama_fasilitas,new_id_jenis_fasilitas]
+# create_data(cur,table = "fasilitas", values= values)
 read_data(cur,table="fasilitas")
 cur.close()
 conn.close()
