@@ -9,10 +9,12 @@ def read_data(select = "*", table = "", orderby = ""):
         query = f"SELECT {select} FROM {table}"
     cur.execute(query)
     data = cur.fetchall()
+    result = []
     for i in data:
-        print(i)
+        result.append(i)
     cur.close()
     conn.close()
+    return result
 
     # Penulisan values menggunakan list. Ex: Values = ["data1",data2, "data3"]
     # Harus urut sesuai kolom di database
@@ -43,7 +45,13 @@ def create_data(table,values):
 def update_data(table,values):
     conn, cur = connection.connect()
     column = column_data(table=table)
-    # for x in 
+
+
+    for x in range(len(column)):
+        for y in values:
+            dump = f"{x} = {y}"
+            
+
     query = f"UPDATE {table} SET {table}"
     cur.close()
     conn.close()
@@ -75,5 +83,5 @@ def column_data(table,idenable=0):
 # values = [new_nama_fasilitas,new_id_jenis_fasilitas]
 # create_data(table = "fasilitas", values= values)
 # read_data(table="fasilitas")
-a = column_data(table="penghuni",idenable=1)
+a = read_data(table="users")
 print(a)
