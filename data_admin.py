@@ -8,11 +8,11 @@ def aksi_admin():
     while True:
         core.clear()
         print('''
-    1. Read
-    2. Create
-    3. Update
-    4. Delete
-    9. Kembali
+1. Read
+2. Create
+3. Update
+4. Delete
+9. Kembali
     ''')
         admin = input("Masukkan nomor: ")
         match admin:
@@ -20,7 +20,14 @@ def aksi_admin():
                 model.read_data(table="users",orderby="id_users")
 
             case '2':
-                model.create_data(table="users", values="")
+                nik_users = int(input("Masukkan NIK: "))
+                nama_users = input("Masukkan Nama Lengkap: ")
+                username = input("Masukkan Username: ")
+                password = input("Masukkan Password: ")
+                no_telepon_users = input("Masukkan Nomor Telepon: ")
+                jenis_users = int(input("Masukkan Role User(1=Owner/2=Admin): "))
+                values = [nik_users,nama_users,username,password,no_telepon_users,jenis_users]
+                model.create_data(table = "users", values= values)
 
             case '3':
                 # update = f"UPDATE mata_kuliah SET nama_mata_kuliah = %s, sks = %s, semester_id = %s"

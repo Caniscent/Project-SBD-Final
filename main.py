@@ -9,14 +9,14 @@ def mainmenu():
     while True:
         core.clear()
         print('''
-        1. Tambah Admin
-        2. Pendataan Penyewaan
-        3. Pendatan Penghuni
-        4. Pendataan Fasilitas
-        5. Ubah Kondisi Fasilitas
-        6. Pendataan Kamar
-        9. Kembali
-        0. Keluar
+1. Pendataan Admin
+2. Pendataan Penyewaan
+3. Pendatan Penghuni
+4. Pendataan Fasilitas
+5. Ubah Kondisi Fasilitas
+6. Pendataan Kamar
+9. Kembali
+0. Keluar
         ''')
         menu = input("Mainmenu: ")
         match menu:
