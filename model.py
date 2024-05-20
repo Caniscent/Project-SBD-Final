@@ -61,13 +61,10 @@ def column_data(table,idenable=0):
 
 
 # Menambah data
-conn, cur = connection.connect()
-print("Data Saat ini: ")
-read_data(table="fasilitas")
-new_nama_fasilitas = str(input("Nama Fasilitas: "))
-new_id_jenis_fasilitas = int(input("ID Fasilitas(1/2): "))
-values = [new_nama_fasilitas,new_id_jenis_fasilitas]
-create_data(table = "fasilitas", values= values)
-read_data(table="fasilitas")
-cur.close()
-conn.close()
+# print("Data Saat ini: ")
+# read_data(table="fasilitas")
+# new_nama_fasilitas = str(input("Nama Fasilitas: "))
+# new_id_jenis_fasilitas = int(input("ID Fasilitas(1/2): "))
+# values = [new_nama_fasilitas,new_id_jenis_fasilitas]
+# create_data(table = "fasilitas", values= values)
+# read_data(table="fasilitas")
