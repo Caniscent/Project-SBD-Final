@@ -10,7 +10,7 @@ def login():
     #Temp variabel
     data_admin = []
     # Membaca database data_admin
-    data = model.read_data(select="username, password",table="users",orderby="id_users")
+    data = model.read_data(select="username, password, jenis_users_id",table="users")
     # Convert database csv ke dictionary
     for i in data:
         data_admin.append({"username": i[0], "password": i[1]})
@@ -30,10 +30,12 @@ def login():
 
         hashed_password = hashlib.md5(password.encode()).hexdigest()
 
+        
+
         # Validasi input username dan password terhadap database
         for user in data_admin:
             # Kondisi benar jika input sesuai dengan database
-            if username == user['username'] and hashed_password == user['password']:
+            if username == user['username'] and hashed_password == user['password'] and user['jenis_users_id']:
                 # UI Login Berhasil
                 salam = f"Selamat Datang {username.title()}"
                 print('+' + '='*83 + '+')
@@ -48,6 +50,9 @@ def login():
                 req = input("| Klik ENTER untuk melanjutkan... ")
                 core.clear()
                 break
+
+            if username == user['username'] and hashed_password == user['password'] and user['jenis_users_id']:
+                print('yahaha gak bisa login')
         # -
         if not sesi_login:
             # UI Login Gagal
