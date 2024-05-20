@@ -40,8 +40,13 @@ def create_data(table,values):
     cur.close()
     conn.close()
 
-def update_data():
-    pass
+def update_data(table,values):
+    conn, cur = connection.connect()
+    column = column_data(table=table)
+    # for x in 
+    query = f"UPDATE {table} SET {table}"
+    cur.close()
+    conn.close()
 
 def delete_data():
     pass
@@ -49,7 +54,7 @@ def delete_data():
 def column_data(table,idenable=0):
     conn, cur = connection.connect()
     column_name = []
-    query_column= f"SELECT column_name FROM information_schema.columns WHERE table_name = '{table}'"
+    query_column= f"SELECT column_name FROM information_schema.columns WHERE table_name = '{table}' ORDER BY ordinal_position"
     cur.execute(query_column)
     data = cur.fetchall()
     if idenable == 1:
@@ -58,7 +63,6 @@ def column_data(table,idenable=0):
     else:
         for i in data[1:]:
             column_name.extend(i)
-    column_name = column_name[::-1]
     return column_name
     
 
@@ -71,3 +75,5 @@ def column_data(table,idenable=0):
 # values = [new_nama_fasilitas,new_id_jenis_fasilitas]
 # create_data(table = "fasilitas", values= values)
 # read_data(table="fasilitas")
+a = column_data(table="penghuni",idenable=1)
+print(a)
