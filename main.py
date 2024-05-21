@@ -1,6 +1,8 @@
 import core
 import login
+import data_user
 import fasilitas
+import kondisi_fasilitas
 import kamar
 
 def mainmenu():
@@ -21,7 +23,7 @@ def mainmenu():
         match menu:
             case '1':
                 pass
-                # data_admin.aksi_admin()
+                data_user.aksi_users()
             case '4':
                 fasilitas.aksi_fasilitas()
             case "6":
@@ -63,7 +65,7 @@ def menuadmin():
         menu = input("Mainmenu: ")
         match menu:
             case '1':
-                pass
+                kondisi_fasilitas.aksi_kondisi_fasilitas()
             case '9':
                 print('+' + '='*83 + '+')
                 print('|' + '[ NOTICE ]'.center(83) + '|')
