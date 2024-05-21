@@ -1,8 +1,7 @@
 import core
 import login
-import data_user
 import fasilitas
-import kondisi_fasilitas
+import kamar
 
 def mainmenu():
     while True:
@@ -13,7 +12,7 @@ def mainmenu():
 2. Pendataan Penyewaan
 3. Pendatan Penghuni
 4. Pendataan Fasilitas
-5. Pnedataan Kondisi Fasilitas
+5. Ubah Kondisi Fasilitas
 6. Pendataan Kamar
 9. Kembali
 0. Keluar
@@ -21,11 +20,12 @@ def mainmenu():
         menu = input("Mainmenu: ")
         match menu:
             case '1':
-                data_user.aksi_users()
+                pass
+                # data_admin.aksi_admin()
             case '4':
                 fasilitas.aksi_fasilitas()
-            case '5':
-                kondisi_fasilitas.aksi_kondisi_fasilitas()
+            case "6":
+                kamar.aksi_kamar()
             case '9':
                 print('+' + '='*83 + '+')
                 print('|' + '[ NOTICE ]'.center(83) + '|')
@@ -63,7 +63,7 @@ def menuadmin():
         menu = input("Mainmenu: ")
         match menu:
             case '1':
-                kondisi_fasilitas.aksi_kondisi_fasilitas()
+                pass
             case '9':
                 print('+' + '='*83 + '+')
                 print('|' + '[ NOTICE ]'.center(83) + '|')
