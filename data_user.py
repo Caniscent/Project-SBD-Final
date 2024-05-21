@@ -1,28 +1,35 @@
-import connection
 import model
 import core
 import main
 import hashlib
 
 
-def aksi_admin():
+def aksi_users():
     while True:
         core.clear()
         print('''
-1. Read
-2. Create
-3. Update
-4. Delete
+[Pendataan Admin]
+1. Lihat Data User
+2. Tambah User
+3. Perbarui Data User
+4. Hapus Data User
 9. Kembali
     ''')
         admin = input("Masukkan nomor: ")
         match admin:
             case '1':
-                kon = model.read_data(table="users",orderby="id_users")
-                for i in kon:
-                    print(i)
-                req = input("Klik ENTER untuk melanjutkan...")
-                core.clear()
+                data = model.read_data(table="users",orderby="id_users")
+                if data:
+                    print(f"{'ID':<5} {'Nama User':<30} {'Username':<10} {'Password':<35} {'Nomor Telepon':<15} {'Jenis User':<5}")
+                    print("-" * 110)
+                    for row in data:
+                        id_users, nama_users, username, password, no_telepon_users, jenis_users_id = row
+                        print(f"{id_users:<5} {nama_users:<30} {username:<10} {password:<35} {no_telepon_users:<15} {jenis_users_id:<5}")
+                else:
+                    print("Tidak ada data user yang tersedia.")
+
+                req = input("Klik ENTER untuk kembali...")
+
             case '2':
                 nama_users = input("Masukkan Nama Lengkap: ")
                 username = input("Masukkan Username: ")
@@ -89,3 +96,7 @@ Username: {data_column[2]}
                 core.clear()
                 main.mainmenu() 
                 
+
+
+if __name__ == "__main__":
+    aksi_users()
