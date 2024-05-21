@@ -61,14 +61,15 @@ def update_data(table,idcolomn,values):
     for x in range(len(column)-1):
         query_values = []
         for y in values:
-            if isinstance(y,str) and y != "":
-                result = f"'{y}'"
-            elif isinstance(y,int) or isinstance(y,float):
-                result = f"{y}"
-            elif y == None:
+            if y == None or y == "None":
                 result = f"NULL"
             else:
-                continue
+                if isinstance(y,str) and y != "":
+                    result = f"'{y}'"
+                elif isinstance(y,int) or isinstance(y,float):
+                    result = f"{y}"
+                else:
+                    continue
             query_values.append(result)
         dump = f"{column[i+1]} = {query_values[i]}"
         data.append(dump)
