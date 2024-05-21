@@ -47,7 +47,7 @@ def hapus_kamar():
     read = model.read_data(table=tabel_kamar)
     for i in read:
         print(i)
-    pilih_id = int(input("Pilih ID data (Nomor) : "))
+    pilih_id = int(input("Pilih ID data (Nomor): "))
     user = input("Yakin ingin menghapus?(Y/n) ")
     if user.lower() == 'y':
         model.delete_data(table=tabel_kamar,idcolumn=pilih_id)
@@ -57,7 +57,7 @@ def hapus_kamar():
 def aksi_kamar():
     core.clear()
     while True:
-        print(" [KAMAR]")
+        print(" [ KAMAR ]")
         print("""| Menu:
     1. Menambah data kamar
     2. Data kamar
