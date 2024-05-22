@@ -36,7 +36,7 @@ def hapus_pembayaran():
     print(f"Tenggat Pembayaran: {data[2]}")
     print(f"Penghuni_id: {data2[1]}")
     req = input("Apakah anda yakin ingin menghapus? (Y/n)")
-    if req == 'Y' or req == 'y':nonloca
+    if req == 'Y' or req == 'y':
         model.delete_data(table=tabel,idcolumn=kolom)
     else:
         req = input("Data gagal dihapus!")
