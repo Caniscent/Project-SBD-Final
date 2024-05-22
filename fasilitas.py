@@ -76,3 +76,6 @@ def aksi_fasilitas():
             case "5":
                 core.clear()
                 main.mainmenu()
+
+if __name__ == "__main__":
+    aksi_fasilitas()

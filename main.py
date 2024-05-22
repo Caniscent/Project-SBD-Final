@@ -1,6 +1,7 @@
 import core
 import login
 import data_user
+import penghuni
 import fasilitas
 import kondisi_fasilitas
 import kamar
@@ -22,10 +23,15 @@ def mainmenu():
         menu = input("Mainmenu: ")
         match menu:
             case '1':
-                pass
                 data_user.aksi_users()
+            case '2':
+                pass    
+            case '3':
+                penghuni.aksi_penghuni()
             case '4':
                 fasilitas.aksi_fasilitas()
+            case '5':
+                kondisi_fasilitas.aksi_kondisi_fasilitas()
             case "6":
                 kamar.aksi_kamar()
             case '9':

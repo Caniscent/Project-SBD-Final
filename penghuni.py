@@ -48,8 +48,8 @@ def edit_penghuni():
     nik_penghuni = input("Masukkan NIK (Enter untuk skip) : ") or data[1]
     nama_penghuni = input("Masukkan Nama Lengkap (Enter untuk skip) : ") or data[2]
     no_telepon_penghuni = input("Masukkan No telepon penghuni: ") or data[3]
-    tanggal_masuk = input("Masukkan tanggal masuk: ") or str(data[4])
-    tanggal_keluar = input("Masukkan tanggal keluar: ") or str(data[5])
+    tanggal_masuk = input("Masukkan tanggal masuk dengan format YYYY-MM-DD HH:MM:SS: ") or str(data[4])
+    tanggal_keluar = input("Masukkan tanggal keluar dengan format YYYY-MM-DD HH:MM:SS (Opsional): ") or str(data[5])
     for i in data_kamar:
         print(i)
     kamar_id = input("Masukkan ID Kamar: ") or data[6]
@@ -60,15 +60,14 @@ def edit_penghuni():
 def hapus_penghuni():
     pass
 
-
-if __name__ == "__main__":
+def aksi_penghuni():
     while True:
         core.clear()
         print(" [PENGHUNI]")
         print("""| Menu:
     1. Menambah data penghuni
-    2. Data penghuni
-    3. Edit data penghuni
+    2. Lihat Data penghuni
+    3. Perbarui data penghuni
     4. Hapus dana penghuni 
     """)   
         input_usr = input("|> Pilih Menu: ")
@@ -84,3 +83,7 @@ if __name__ == "__main__":
         else:
             req = input("")
             core.clear()
+
+
+if __name__ == "__main__":
+    aksi_penghuni()
