@@ -43,8 +43,14 @@ def aksi_users():
             case '3':
                 table = "users"
                 data = model.read_data(table=table)
-                for i in data:
-                    print(i)
+                if data:
+                    print(f"{'ID':<5} {'Nama User':<30} {'Username':<10} {'Password':<35} {'Nomor Telepon':<15} {'Jenis User':<5}")
+                    print("-" * 110)
+                    for row in data:
+                        id_users, nama_users, username, password, no_telepon_users, jenis_users_id = row
+                        print(f"{id_users:<5} {nama_users:<30} {username:<10} {password:<35} {no_telepon_users:<15} {jenis_users_id:<5}")
+                else:
+                    print("Tidak ada data user yang tersedia.")
 
                 id_column = int(input("Masukkan ID Users: "))
                 data_column = model.read_data(table=table,columnid=str(id_column))
@@ -67,14 +73,26 @@ Jenis Users Id: {data_column[5]}
                 values = [nama_users,username,password,no_telepon_users,jenis_users_id]
                 model.update_data(table=table,idcolomn=id_column,values=values)
                 read = model.read_data(table=table)
-                for i in read:
-                    print(i)
+                if data:
+                    print(f"{'ID':<5} {'Nama User':<30} {'Username':<10} {'Password':<35} {'Nomor Telepon':<15} {'Jenis User':<5}")
+                    print("-" * 110)
+                    for row in data:
+                        id_users, nama_users, username, password, no_telepon_users, jenis_users_id = row
+                        print(f"{id_users:<5} {nama_users:<30} {username:<10} {password:<35} {no_telepon_users:<15} {jenis_users_id:<5}")
+                else:
+                    print("Tidak ada data user yang tersedia.")
             
             case '4':
                 table = "users"
                 data = model.read_data(table=table)
-                for i in data:
-                    print(i)
+                if data:
+                    print(f"{'ID':<5} {'Nama User':<30} {'Username':<10} {'Password':<35} {'Nomor Telepon':<15} {'Jenis User':<5}")
+                    print("-" * 110)
+                    for row in data:
+                        id_users, nama_users, username, password, no_telepon_users, jenis_users_id = row
+                        print(f"{id_users:<5} {nama_users:<30} {username:<10} {password:<35} {no_telepon_users:<15} {jenis_users_id:<5}")
+                else:
+                    print("Tidak ada data user yang tersedia.")
 
                 id_column = int(input(f"Pilih ID {table} yang akan dihapus: "))
                 data_column = model.read_data(table=table,columnid=id_column)
