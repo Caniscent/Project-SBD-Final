@@ -1,6 +1,7 @@
 import model
 import datetime
 import core
+import main
 from dateutil.relativedelta import relativedelta
 
 tabel = "pembayaran"
