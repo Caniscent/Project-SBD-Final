@@ -1,5 +1,6 @@
 import model
 import datetime
+import core
 from dateutil.relativedelta import relativedelta
 
 tabel = "pembayaran"
@@ -17,7 +18,6 @@ def menambah_pembayaran():
         print(i)
     id_penghuni = input("Masukkan ID Penghuni: ")
     values = [tanggal_pembayaran, tenggat_pembayaran, id_penghuni]
-    print(values)
     model.create_data(table=tabel,values=values)
 
 def read_pembayaran():
@@ -42,7 +42,7 @@ def hapus_pembayaran():
     print(f"Tenggat Pembayaran: {data[2]}")
     print(f"Penghuni_id: {data2[1]}")
     req = input("Apakah anda yakin ingin menghapus? (Y/n)")
-    if req == 'Y' or req == 'y':nonloca
+    if req == 'Y' or req == 'y':
         model.delete_data(table=tabel,idcolumn=kolom)
     else:
         req = input("Data gagal dihapus!")
@@ -51,9 +51,35 @@ def hapus_pembayaran():
 
 
 def aksi_pembayaran():
-    menambah_pembayaran()
+    core.clear()
+    while True:
+        print("PEMBAYARAN]")
+        print("""Menu :
+        1. Lihat Pembayaran
+        2. Tambah Pembayaran
+        3. Update Pembayaran
+        4. Hapus Pembayaran
+        5. Kembali
+        """)
+
+        input_user = input("Pilih Menu : ")
+
+        match input_user:
+            case "1":
+                core.clear()
+                read_pembayaran()
+            case "2":
+                menambah_pembayaran()
+            case "3":
+                core.clear()
+                update_pembayaran()
+            case "4":
+                core.clear()
+                hapus_pembayaran()
+            case "5":
+                core.clear()
+                main.mainmenu()
 
 if __name__ == "__main__":
-    # column = model.column_data(table=tabel)
-    # print(column)
-    hapus_pembayaran()
+    aksi_pembayaran()
+    

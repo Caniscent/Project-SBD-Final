@@ -5,6 +5,7 @@ import penghuni
 import fasilitas
 import kondisi_fasilitas
 import kamar
+import pembayaran
 
 def mainmenu():
     while True:
@@ -25,7 +26,7 @@ def mainmenu():
             case '1':
                 data_user.aksi_users()
             case '2':
-                pass    
+                pembayaran.aksi_pembayaran()    
             case '3':
                 penghuni.aksi_penghuni()
             case '4':
