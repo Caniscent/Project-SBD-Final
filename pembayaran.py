@@ -1,17 +1,23 @@
 import model
+import datetime
+from dateutil.relativedelta import relativedelta
 
 tabel = "pembayaran"
 tabel_penghuni = "penghuni"
 
 def menambah_pembayaran():
     print(f"[Menambah data baru]")
-    tanggal_pembayaran = input("Masukkan tanggal pembayaran: ")
-    tenggat_pembayaran = input("Masukkan tenggat pembayaran: ")
+    tanggal_pembayaran = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+    # tanggal_pembayaran = input("Masukkan tanggal pembayaran (enter untuk today) :" or tanggal_pembayaran)
+    lama_sewa = int(input("Masukkan lama sewa (bulan) : "))
+    tenggat_pembayaran = datetime.datetime.now() + relativedelta(months=+lama_sewa)
+    tenggat_pembayaran = tenggat_pembayaran.strftime('%Y-%m-%d %H:%M:%S')
     penghuni = model.read_data(table=tabel_penghuni)
     for i in penghuni:
         print(i)
     id_penghuni = input("Masukkan ID Penghuni: ")
-    values = [tanggal_pembayaran,tenggat_pembayaran,id_penghuni]
+    values = [tanggal_pembayaran, tenggat_pembayaran, id_penghuni]
+    print(values)
     model.create_data(table=tabel,values=values)
 
 def read_pembayaran():
