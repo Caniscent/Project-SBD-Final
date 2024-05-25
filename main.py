@@ -18,7 +18,7 @@ def mainmenu():
 4. Pendataan Fasilitas
 5. Ubah Kondisi Fasilitas
 6. Pendataan Kamar
-9. Kembali
+9. Logout
 0. Keluar
         ''')
         menu = input("Mainmenu: ")
@@ -38,7 +38,7 @@ def mainmenu():
             case '9':
                 print('+' + '='*83 + '+')
                 print('|' + '[ NOTICE ]'.center(83) + '|')
-                print('|' + 'Apakah Anda yakin untuk kembali ke menu login? (y/n)'.center(83) + '|')
+                print('|' + 'Apakah Anda yakin ingin logout? (y/n)'.center(83) + '|')
                 print('+' + '='*83 + '+')
                 user = input(f"| > ")
                 if user.lower() == 'y' or user.lower() == 'yes':
@@ -49,7 +49,7 @@ def mainmenu():
             case '0':
                 print('+' + '='*83 + '+')
                 print('|' + '[ NOTICE ]'.center(83) + '|')
-                print('|' + 'Apakah Anda yakin untuk keluar? (y/n)'.center(83) + '|')
+                print('|' + 'Apakah Anda yakin ingin keluar? (y/n)'.center(83) + '|')
                 print('+' + '='*83 + '+')
                 user = input(f"| > ")
                 if user.lower() == 'y' or user.lower() == 'yes':
@@ -76,7 +76,7 @@ def menuadmin():
             case '9':
                 print('+' + '='*83 + '+')
                 print('|' + '[ NOTICE ]'.center(83) + '|')
-                print('|' + 'Apakah Anda yakin untuk kembali ke menu login? (y/n)'.center(83) + '|')
+                print('|' + 'Apakah Anda yakin ingin logout? (y/n)'.center(83) + '|')
                 print('+' + '='*83 + '+')
                 user = input(f"| > ")
                 if user.lower() == 'y' or user.lower() == 'yes':
@@ -87,7 +87,7 @@ def menuadmin():
             case '0':
                 print('+' + '='*83 + '+')
                 print('|' + '[ NOTICE ]'.center(83) + '|')
-                print('|' + 'Apakah Anda yakin untuk keluar? (y/n)'.center(83) + '|')
+                print('|' + 'Apakah Anda yakin ingin keluar? (y/n)'.center(83) + '|')
                 print('+' + '='*83 + '+')
                 user = input(f"| > ")
                 if user.lower() == 'y' or user.lower() == 'yes':
