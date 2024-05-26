@@ -84,11 +84,17 @@ def update_data(table,idcolomn,values):
     cur.close()
     conn.close()
 
-def delete_data(table,idcolumn):
+def delete_data(table,idcolumn,foreign_key="",foreign_table=""):
     conn, cur = connection.connect()
     column = column_data(table=table,idenable=1)
 
-    query = f"DELETE FROM {table} WHERE {column[0]} = {idcolumn}"
+    primary_key_column = column[0]
+
+    if foreign_key and foreign_table:
+        foreign_query = f"DELETE FROM {foreign_table} WHERE {foreign_key} = {idcolumn}"
+        cur.execute(foreign_query)
+
+    query = f"DELETE FROM {table} WHERE {primary_key_column} = {idcolumn}"
 
     cur.execute(query)
     conn.commit()

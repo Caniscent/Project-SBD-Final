@@ -1,17 +1,24 @@
 import model
+import datetime
+import core
+import main
+from dateutil.relativedelta import relativedelta
 
 tabel = "pembayaran"
 tabel_penghuni = "penghuni"
 
 def menambah_pembayaran():
     print(f"[Menambah data baru]")
-    tanggal_pembayaran = input("Masukkan tanggal pembayaran: ")
-    tenggat_pembayaran = input("Masukkan tenggat pembayaran: ")
+    tanggal_pembayaran = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+    # tanggal_pembayaran = input("Masukkan tanggal pembayaran (enter untuk today) :" or tanggal_pembayaran)
+    lama_sewa = int(input("Masukkan lama sewa (bulan) : "))
+    tenggat_pembayaran = datetime.datetime.now() + relativedelta(months=+lama_sewa)
+    tenggat_pembayaran = tenggat_pembayaran.strftime('%Y-%m-%d %H:%M:%S')
     penghuni = model.read_data(table=tabel_penghuni)
     for i in penghuni:
         print(i)
     id_penghuni = input("Masukkan ID Penghuni: ")
-    values = [tanggal_pembayaran,tenggat_pembayaran,id_penghuni]
+    values = [tanggal_pembayaran, tenggat_pembayaran, id_penghuni]
     model.create_data(table=tabel,values=values)
 
 def read_pembayaran():
@@ -45,9 +52,35 @@ def hapus_pembayaran():
 
 
 def aksi_pembayaran():
-    menambah_pembayaran()
+    core.clear()
+    while True:
+        print("PEMBAYARAN]")
+        print("""Menu :
+        1. Lihat Pembayaran
+        2. Tambah Pembayaran
+        3. Update Pembayaran
+        4. Hapus Pembayaran
+        5. Kembali
+        """)
+
+        input_user = input("Pilih Menu : ")
+
+        match input_user:
+            case "1":
+                core.clear()
+                read_pembayaran()
+            case "2":
+                menambah_pembayaran()
+            case "3":
+                core.clear()
+                update_pembayaran()
+            case "4":
+                core.clear()
+                hapus_pembayaran()
+            case "5":
+                core.clear()
+                main.mainmenu()
 
 if __name__ == "__main__":
-    # column = model.column_data(table=tabel)
-    # print(column)
-    hapus_pembayaran()
+    aksi_pembayaran()
+    
