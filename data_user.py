@@ -3,6 +3,8 @@ import core
 import main
 import hashlib
 
+table = "users"
+table_foreign = "status_fasilitas"
 
 def aksi_users():
     while True:
@@ -66,7 +68,6 @@ def aksi_users():
 
             case '3':
                 while True:
-                    table = "users"
                     data = model.read_data(table=table,orderby="id_users")
                     if data:
                         print(f"{'ID':<5} {'Nama User':<30} {'Username':<10} {'Password':<35} {'Nomor Telepon':<15} {'Jenis User':<5}")
@@ -103,7 +104,7 @@ Jenis Users Id: {data_column[5]}
                                 values = [nama_users,username,hashed_password,no_telepon_users,jenis_users_id]
                                 model.update_data(table=table,idcolomn=id_column,values=values)
                                 # read = model.read_data(table=table)
-                                print("\n[Data sudah diperbarui]")
+                                print("\n[User sudah diperbarui]")
                                 req = input('Klik ENTER untuk melanjutkan!')
                                 core.clear()
                                 break
@@ -125,7 +126,6 @@ Jenis Users Id: {data_column[5]}
             
             case '4':
                 while True:
-                    table = "users"
                     data = model.read_data(table=table,orderby="id_users")
                     if data:
                         print(f"{'ID':<5} {'Nama User':<30} {'Username':<10} {'Password':<35} {'Nomor Telepon':<15} {'Jenis User':<5}")
@@ -148,13 +148,17 @@ Nama Lengkap: {data_column[1]}
 Username: {data_column[2]}
                                 """)
                                 user = input("Yakin ingin menghapus?(Y/n) ")
-                                if user.lower() == 'y':
-                                    model.delete_data(table=table,idcolumn=id_column)
-                                    print('\n[Data sudah dihapus]')
+                                if user.lower() == 'y' and data_column[2] != 'nahel':
+                                    model.delete_data(table=table,idcolumn=id_column,foreign_key="users_id",foreign_table=table_foreign)
+                                    print('\n[User sudah dihapus]')
+                                    req = input('Klik ENTER untuk melanjutkan!')
+                                    break
+                                elif user.lower() == 'y'and data_column[2] == 'nahel':
+                                    print('\n[ OWNER UTAMA TIDAK BOLEH DIHAPUS! ]')
                                     req = input('Klik ENTER untuk melanjutkan!')
                                     break
                                 else:
-                                    print("\n[Data tidak jadi dihapus]")
+                                    print("\n[User tidak jadi dihapus]")
                                     req = input('Klik ENTER untuk melanjutkan!')
                                     break
 

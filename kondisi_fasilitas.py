@@ -58,7 +58,7 @@ def aksi_kondisi_fasilitas():
 
             case '2':
                 while True:
-                    fasilitas = model.read_data(table="fasilitas")
+                    fasilitas = model.read_data(table="fasilitas",orderby="id_fasilitas")
                     if fasilitas:
                         print(f"{'ID':<5} {'Nama Fasilitas':<15} {'Jenis Fasilitas':<5}")
                         print("-" * 37)
@@ -72,7 +72,7 @@ def aksi_kondisi_fasilitas():
                         break
                     id_fasilitas = input("Masukkan ID Fasilitas sesuai data diatas: ")
 
-                    status = model.read_data(table="status")
+                    status = model.read_data(table="status",orderby="id_status")
                     if status:
                         print(f"{'ID':<5} {'Status':<5}")
                         print("-" * 17)
@@ -86,7 +86,7 @@ def aksi_kondisi_fasilitas():
                         break
                     id_status = input("Masukkan ID Status sesuai data diatas: ")
 
-                    users = model.read_data(table="users")
+                    users = model.read_data(table="users",orderby="id_users")
                     if users:
                         print(f"{'ID':<5} {'Nama User':<30} {'Username':<10} {'Password':<35} {'Nomor Telepon':<15} {'Jenis User':<5}")
                         print("-" * 110)
@@ -164,7 +164,7 @@ Keterangan: {read[4]}\n
 """)
                                 print("Perbarui Data Kondisi")
                                 print('-'*37)
-                                fasilitas = model.read_data(table="fasilitas")
+                                fasilitas = model.read_data(table="fasilitas",orderby="id_fasilitas")
                                 if fasilitas:
                                     print(f"{'ID':<5} {'Nama Fasilitas':<15} {'Jenis Fasilitas':<5}")
                                     print("-" * 37)
@@ -178,7 +178,7 @@ Keterangan: {read[4]}\n
                                     break
                                 id_fasilitas = input("Perbarui ID fasilitas sesuai data diatas: ") or read[1]
 
-                                status = model.read_data(table="status")
+                                status = model.read_data(table="status",orderby="id_status")
                                 if status:
                                     print(f"{'ID':<5} {'Status':<5}")
                                     print("-" * 17)
@@ -192,7 +192,7 @@ Keterangan: {read[4]}\n
                                     break
                                 id_status = input("Perbarui ID Status sesuai data diatas: ") or read[2]
 
-                                users = model.read_data(table="users")
+                                users = model.read_data(table="users",orderby="id_users")
                                 if users:
                                     print(f"{'ID':<5} {'Nama User':<30} {'Username':<10} {'Password':<35} {'Nomor Telepon':<15} {'Jenis User':<5}")
                                     print("-" * 110)

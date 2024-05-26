@@ -5,6 +5,7 @@ import main
 
 tabel_fasilitas = "fasilitas"
 tabel_jenis = "jenis_fasilitas"
+tabel_status_fasilitas = "status_fasilitas"
 
 def lihat_fasilitas(tabel_fasilitas):
     # kolom = model.column_data(table=tabel_fasilitas, idenable=True)
@@ -46,7 +47,7 @@ def tambah_fasilitas(table_fasilitas, table_jenis):
     core.clear()
 
 
-def hapus_fasilitas(tabel_fasilitas):
+def hapus_fasilitas(tabel_fasilitas,tabel_status_fasilitas):
     while True:
         # kolom = model.column_data(table=tabel_fasilitas, idenable=True)
         data = model.read_data(table=tabel_fasilitas,orderby="id_fasilitas")
@@ -64,11 +65,22 @@ def hapus_fasilitas(tabel_fasilitas):
             try:    
                 pilih_id = int(pilih_id)
                 if any(id_fasilitas == pilih_id for id_fasilitas, _, _ in data):
-                    model.delete_data(tabel_fasilitas, pilih_id)
-                    print("\n[Data sudah dihapus]")
-                    req = input('Klik ENTER untuk melanjutkan!')
-                    core.clear()
-                    break
+                    data_column = model.read_data(table=tabel_fasilitas,columnid=pilih_id)
+                    print(f"""
+ID Fasilitas: {data_column[0]}
+Nama Fasilitas: {data_column[1]}
+Jenis Fasilitas: {data_column[2]}
+""")
+                    user = input('Yakin ingin menghapus fasilitas(Y/n)? ')
+                    if user.lower() == 'y':
+                        model.delete_data(tabel_fasilitas, pilih_id, foreign_key="fasilitas_id", foreign_table=tabel_status_fasilitas)
+                        print("\n[Data sudah dihapus]")
+                        req = input('Klik ENTER untuk melanjutkan!')
+                        break
+                    else:
+                        print("\n[Data tidak jadi dihapus]")
+                        req = input('Klik ENTER untuk melanjutkan!')
+                        break
                 else:
                     print("\n[Data tidak ada!]")
                     req = input('Klik ENTER untuk melanjutkan!')
@@ -161,7 +173,7 @@ Menu :
                 update_fasilitas(tabel_fasilitas, tabel_jenis)
                 core.clear()
             case "4":
-                hapus_fasilitas(tabel_fasilitas)
+                hapus_fasilitas(tabel_fasilitas,tabel_status_fasilitas)
                 core.clear()
             case "9":
                 core.clear()
