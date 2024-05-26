@@ -23,13 +23,32 @@ def menambah_pembayaran():
 
 def read_pembayaran():
     column = model.column_data(table=tabel,idenable=True)
-    data = model.read_data(table=tabel)
+    data = model.read_data(table=tabel,orderby=column[0])
     print(column)
     for i in data:
         print(i)
 
 def update_pembayaran():
-    pass
+    read_pembayaran()
+    id_column = input("Pilih ID pembayaran yang ingin diupdate: ")
+    data = model.read_data(table=tabel,columnid=id_column)
+    data_penghuni = model.read_data(table="penghuni",columnid=data[3])
+    print("Data: ")
+    print(f"ID Data: {data[0]}")
+    print(f"Tanggal Pembayaran: {data[1]}")
+    print(f"Tenggat Pembayaran: {data[2]}")
+    print(f"Penghuni: {data_penghuni[2]}")
+    print('-'*30)
+    print(f"Update data: ")
+    tanggal_pembayaran = str(input("Masukkan tanggal pembayaran(YYYY/MM/DD HH:MM:SS): ") or data[1])
+    tenggat_pembayaran = str(input("Masukkan tenggat pembayaran(YYYY/MM/DD HH:MM:SS): ") or data[2])
+    print(f"Data Penghuni: ")
+    for i in data_penghuni:
+        print(i)
+    penghuni_id = str(input("Masukkan ID Penghuni: ") or data[3])
+    values = [tanggal_pembayaran,tenggat_pembayaran,penghuni_id]
+    model.update_data(table=tabel,idcolomn=id_column,values=values)
+    req = input("Data berhasil diupdate. Klik Enter untuk melanjutkan...")
 
 def hapus_pembayaran():
     read_pembayaran()
