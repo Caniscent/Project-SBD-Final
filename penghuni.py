@@ -8,14 +8,20 @@ def new_penghuni():
         nik_penghuni = input("| Masukkan NIK\t: ")
         nama_penghuni = input("| Masukkan Nama Lengkap\t: ")
         no_telepon_penghuni = input("| Nomor Telepon\t: ")
-        print("Format Tanggal Masuk = yyyy-mm-dd hh:mm:ss")
+        print("Format Tanggal = yyyy-mm-dd hh:mm:ss")
         tanggal_masuk = input("| Tanggal Masuk\t: ")
-        tanggal_keluar = input("| Tanggal Keluar(opsional\t: ")
+        tanggal_keluar = input("| Tanggal Keluar(opsional)\t: ")
         data_kamar = model.read_data(table="kamar")
-        for i in data_kamar:
-            print(i)
+        if data_kamar:
+            print(f"{'ID':<5} {'Nomor Kamar':<12} {'Tipe Kamar':<10}")
+            print("-" * 36)
+            for row in data_kamar:
+                id_kamar, nomor_kamar, tipe_kamar_id = row
+                print(f"{id_kamar:<5} {nomor_kamar:<12} {tipe_kamar_id:<10}")
+        else:
+            print("[Tidak ada data kamar yang tersedia]")
         kamar_id = input("| Kamar\t: ")
-
+        
         if not (nik_penghuni and nama_penghuni and no_telepon_penghuni and tanggal_masuk and kamar_id):
             print('\n[ DATA TIDAK LENGKAP ]')
             print('Klik ENTER untuk melanjutkan!')
@@ -25,10 +31,18 @@ def new_penghuni():
 
         data = model.read_data(table=table)
         data_ada = [cek[1] for cek in data]
+        kamar_ada = [cek[6] for cek in data]
         # for cek in data[1:]:
         #     data_ada.append(cek[1])
         if nik_penghuni in data_ada:
             print('\n[ PENGHUNI DENGAN NIK INI SUDAH ADA ]')
+            print('Klik ENTER untuk melanjutkan!')
+            enter = input()
+            core.clear()
+            break
+
+        if kamar_id in kamar_ada:
+            print('\n[ KAMAR DENGAN ID INI SUDAH DIGUNAKAN PENGHUNI LAIN ]')
             print('Klik ENTER untuk melanjutkan!')
             enter = input()
             core.clear()

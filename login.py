@@ -64,14 +64,21 @@ def login():
 
 
 
-        # -
-        if not sesi_login and user['jenis_users_id'] != 1:
-            # UI Login Gagal
-            print('+' + '='*83 + '+')
-            print('|' + '[ LOGIN FAILED ]'.center(83) + '|')
-            print('|' + 'Username/Password salah atau bukan Owner!'.center(83) + '|')
-            print('+' + '='*83 + '+')
-            percobaan -= 1
+            # -
+            if not sesi_login:
+                # UI Login Gagal
+                print('+' + '='*83 + '+')
+                print('|' + '[ LOGIN FAILED ]'.center(83) + '|')
+                print('|' + 'Username/Password salah!'.center(83) + '|')
+                print('+' + '='*83 + '+')
+                percobaan -= 1
+
+            if user['jenis_users_id'] != 1:
+                print('+' + '='*83 + '+')
+                print('|' + '[ LOGIN FAILED ]'.center(83) + '|')
+                print('|' + 'User ini bukan Owner!'.center(83) + '|')
+                print('+' + '='*83 + '+')
+                percobaan -= 1
             #  - 
             if percobaan == 0 and not sesi_login:
                 # UI Login gagal

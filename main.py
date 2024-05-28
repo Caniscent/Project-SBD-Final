@@ -18,6 +18,7 @@ def mainmenu():
 4. Pendataan Fasilitas
 5. Ubah Kondisi Fasilitas
 6. Pendataan Kamar
+7. Pendataan Fasilitas Kamar
 9. Logout
 0. Keluar
         ''')
@@ -35,11 +36,10 @@ def mainmenu():
                 kondisi_fasilitas.aksi_kondisi_fasilitas()
             case "6":
                 kamar.aksi_kamar()
+            case "7":
+                pass
             case '9':
-                print('+' + '='*83 + '+')
-                print('|' + '[ NOTICE ]'.center(83) + '|')
-                print('|' + 'Apakah Anda yakin ingin logout? (y/n)'.center(83) + '|')
-                print('+' + '='*83 + '+')
+                print('Apakah Anda yakin ingin logout? (y/n)')
                 user = input(f"| > ")
                 if user.lower() == 'y' or user.lower() == 'yes':
                     core.clear()
@@ -47,10 +47,7 @@ def mainmenu():
                 else:
                     core.clear()
             case '0':
-                print('+' + '='*83 + '+')
-                print('|' + '[ NOTICE ]'.center(83) + '|')
-                print('|' + 'Apakah Anda yakin ingin keluar? (y/n)'.center(83) + '|')
-                print('+' + '='*83 + '+')
+                print('|' + 'Apakah Anda yakin ingin keluar? (y/n)')
                 user = input(f"| > ")
                 if user.lower() == 'y' or user.lower() == 'yes':
                     core.clear()
@@ -74,10 +71,7 @@ def menuadmin():
             case '1':
                 kondisi_fasilitas.aksi_kondisi_fasilitas()
             case '9':
-                print('+' + '='*83 + '+')
-                print('|' + '[ NOTICE ]'.center(83) + '|')
-                print('|' + 'Apakah Anda yakin ingin logout? (y/n)'.center(83) + '|')
-                print('+' + '='*83 + '+')
+                print('Apakah Anda yakin ingin logout? (y/n)')
                 user = input(f"| > ")
                 if user.lower() == 'y' or user.lower() == 'yes':
                     core.clear()
@@ -85,10 +79,7 @@ def menuadmin():
                 else:
                     core.clear()
             case '0':
-                print('+' + '='*83 + '+')
-                print('|' + '[ NOTICE ]'.center(83) + '|')
-                print('|' + 'Apakah Anda yakin ingin keluar? (y/n)'.center(83) + '|')
-                print('+' + '='*83 + '+')
+                print('Apakah Anda yakin ingin keluar? (y/n)')
                 user = input(f"| > ")
                 if user.lower() == 'y' or user.lower() == 'yes':
                     core.clear()

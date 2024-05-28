@@ -6,9 +6,9 @@ import connection
 tabel_kamar="kamar"
 tabel_penghuni="penghuni"
 
-def read_join(columnid=""):
+def read_join():
     conn, cur = connection.connect()
-    column = model.column_data(table=tabel_kamar, idenable=1)
+    # column = model.column_data(table=tabel_kamar, idenable=1)
 
     query_join = f"""
 SELECT k.id_kamar, k.nomor_kamar, tk.nama_tipe_kamar
