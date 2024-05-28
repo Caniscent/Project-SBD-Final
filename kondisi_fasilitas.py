@@ -7,7 +7,7 @@ table="status_fasilitas"
 
 def read_join():
     conn, cur = connection.connect()
-    # column = model.column_data(table=table, idenable=1)
+    column = model.column_data(table=table, idenable=1)
 
     query_join = f"""
 SELECT sf.id_status_fasilitas, f.nama_fasilitas, s.nama_status, u.nama_users, sf.keterangan 
@@ -15,15 +15,9 @@ FROM status_fasilitas sf
 JOIN fasilitas f ON f.id_fasilitas = sf.fasilitas_id
 JOIN status s ON s.id_status = sf.status_id
 JOIN users u ON u.id_users = sf.users_id
+ORDER BY {column[0]} ASC
 """
-    
-    # if columnid:
-    #     query = f"{query_join} WHERE {column[0]} = {columnid}"
-    #     cur.execute(query, (columnid))
-    #     result = cur.fetchone()
-    # else:
-    query = f"{query_join} ORDER BY id_status_fasilitas ASC"
-    cur.execute(query)
+    cur.execute(query_join)
     result = cur.fetchall()
     
     cur.close()
