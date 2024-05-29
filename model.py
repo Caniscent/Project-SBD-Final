@@ -10,7 +10,7 @@ def read_data(select = "*", table = "",columnid="" ,orderby = "",join_tables=Non
         for i in range(len(join_tables)):
             join_table = join_tables[i]
             join_condition = join_conditions[i]
-            join_clause += f"JOIN {join_table} ON {join_condition}"
+            join_clause += f"JOIN {join_table} ON {join_condition} "
 
     if columnid != "":
         query = f"SELECT {select} FROM {table} WHERE {column[0]} = {columnid}"
@@ -24,7 +24,7 @@ def read_data(select = "*", table = "",columnid="" ,orderby = "",join_tables=Non
             else:
                 query = f"SELECT {select} FROM {table} ORDER BY {orderby}"
         else:
-            query = f"SELECT {select} FROM {table}"
+            query = f"SELECT {select} FROM {table} {join_clause}"
         cur.execute(query)
         data = cur.fetchall()
         result = []
