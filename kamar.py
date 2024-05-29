@@ -23,13 +23,13 @@ def baca_kamar ():
         print("[Tidak ada data kamar yang tersedia]")
 
     req = input("Klik ENTER untuk kembali...")
-
+    core.clear()
 def tambah_kamar ():
     while True:
         nomor_kamar = input ("Masukkan Nomor Kamar: ")
-        data_kamar = model.read_data(table="kamar")
-        for i in data_kamar:
-            print(i)
+        # data_kamar = model.read_data(table="kamar")
+        # for i in data_kamar:
+        #     print(i)
         print("ID 1 = Kamar Mandi Dalam\nID 2 = Kamar Mandi Luar")
         tipe_kamar_id = input ("masukkan ID Tipe Kamar: ")
         if not (nomor_kamar and tipe_kamar_id):
