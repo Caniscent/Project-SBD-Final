@@ -6,37 +6,17 @@ import connection
 tabel_kamar="kamar"
 tabel_penghuni="penghuni"
 
-def read_join():
-    conn, cur = connection.connect()
-    # column = model.column_data(table=tabel_kamar, idenable=1)
-
-    query_join = f"""
-SELECT k.id_kamar, k.nomor_kamar, tk.nama_tipe_kamar
-FROM kamar k
-JOIN tipe_kamar tk ON tk.id_tipe_kamar = k.tipe_kamar_id
-"""
-    
-    # if columnid:
-    #     query = f"{query_join} WHERE {column[0]} = {columnid}"
-    #     cur.execute(query, (columnid))
-    #     result = cur.fetchone()
-    # else:
-    query = f"{query_join} ORDER BY id_kamar ASC"
-    cur.execute(query)
-    result = cur.fetchall()
-        
-    cur.close()
-    conn.close()
-    return result
-
 def baca_kamar ():
-    # data = model.column_data(table=tabel_kamar,idenable=True)
-    read = read_join()
-    # print(data)
-    if read:
+    data = model.read_data(select="k.id_kamar, k.nomor_kamar, tk.nama_tipe_kamar",
+                           table="kamar k",
+                           orderby="id_kamar",
+                           join_tables=["tipe_kamar tk"],
+                           join_conditions=["k.tipe_kamar_id = tk.id_tipe_kamar"])
+    
+    if data:
         print(f"{'ID':<5} {'Nomor Kamar':<12} {'Tipe Kamar':<10}")
         print("-" * 36)
-        for row in read:
+        for row in data:
             id_kamar, nomor_kamar, tipe_kamar_id = row
             print(f"{id_kamar:<5} {nomor_kamar:<12} {tipe_kamar_id:<10}")
     else:
