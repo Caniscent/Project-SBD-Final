@@ -60,8 +60,13 @@ def tambah_kamar ():
 def ubah_kamar ():
     while True:
         # data = model.column_data(table=tabel_kamar,idenable=True)
-        read = read_join()
+        # read = read_join()
         # print(data)
+        read = model.read_data(select="k.id_kamar, k.nomor_kamar, tk.nama_tipe_kamar",
+                           table="kamar k",
+                           orderby="id_kamar",
+                           join_tables=["tipe_kamar tk"],
+                           join_conditions=["k.tipe_kamar_id = tk.id_tipe_kamar"])
         if read:
             print(f"{'ID':<5} {'Nomor Kamar':<12} {'Tipe Kamar':<10}")
             print("-" * 36)
@@ -113,7 +118,12 @@ def ubah_kamar ():
 def hapus_kamar():
     while True:
         # data = model.column_data(table=tabel_kamar,idenable=True)
-        read = read_join()
+        # read = read_join()
+        read = model.read_data(select="k.id_kamar, k.nomor_kamar, tk.nama_tipe_kamar",
+                           table="kamar k",
+                           orderby="id_kamar",
+                           join_tables=["tipe_kamar tk"],
+                           join_conditions=["k.tipe_kamar_id = tk.id_tipe_kamar"])
         if read:
             print(f"{'ID':<5} {'Nomor Kamar':<12} {'Tipe Kamar':<10}")
             print("-" * 36)
