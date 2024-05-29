@@ -105,10 +105,14 @@ Jenis Fasilitas: {data_column[2]}
     
 def update_fasilitas(tabel_fasilitas, tabel_jenis):
     while True:
-        # kolom = model.column_data(table=tabel_fasilitas, idenable=True)
-        data = model.read_data(table=tabel_fasilitas,orderby="id_fasilitas")
+        data = model.read_data(select="f.id_fasilitas, f.nama_fasilitas, jf.nama_jenis_fasilitas",
+                           table="fasilitas f",
+                           orderby="id_fasilitas",
+                           join_tables=["jenis_fasilitas jf"], 
+                           join_conditions=["jf.id_jenis_fasilitas = f.jenis_fasilitas_id"])
+        
         data_jenis = model.read_data(table=tabel_jenis)
-        # print(kolom)
+    
         if data:
             print(f"{'ID':<5} {'Nama Fasilitas':<20} {'Jenis Fasilitas':<5}")
             print("-" * 42)
@@ -118,7 +122,7 @@ def update_fasilitas(tabel_fasilitas, tabel_jenis):
         else:
             print("Tidak ada data user yang tersedia.")
         
-        pilih_id = input("Pilih Data (Nomor) : ")
+        pilih_id = input("Pilih ID  : ")
         if pilih_id:
             try:    
                 pilih_id = int(pilih_id)

@@ -74,7 +74,7 @@ def update_pembayaran():
     while True:
         core.clear()
         read_pembayaran()
-        read = model.read_data(table=tabel)
+        read = model.read_data(table=tabel,columnid=id)
         id_column = input("Pilih ID pembayaran yang ingin diupdate: ")
         if id_column:
             try:    

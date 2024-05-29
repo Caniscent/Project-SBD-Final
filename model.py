@@ -13,7 +13,7 @@ def read_data(select = "*", table = "",columnid="" ,orderby = "",join_tables=Non
             join_clause += f"JOIN {join_table} ON {join_condition} "
 
     if columnid != "":
-        query = f"SELECT {select} FROM {table} WHERE {column[0]} = {columnid}"
+        query = f"SELECT {select} FROM {table} {join_table} WHERE {column[0]} = {columnid}"
         cur.execute(query)
         data = cur.fetchone()
         result = data
