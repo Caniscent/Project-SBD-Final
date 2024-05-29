@@ -1,9 +1,17 @@
 import psycopg2
 import connection
 
-def read_data(select = "*", table = "",columnid="" ,orderby = ""):
+def read_data(select = "*", table = "",columnid="" ,orderby = "",join_tables=None, join_conditions=None):
     conn, cur = connection.connect()
     column = column_data(table=table, idenable=1)
+
+    join_clause = ""
+    if join_tables and join_conditions:
+        for i in range(len(join_tables)):
+            join_table = join_tables[i]
+            join_condition = join_conditions[i]
+            join_clause += f"JOIN {join_table} ON {join_condition}"
+
     if columnid != "":
         query = f"SELECT {select} FROM {table} WHERE {column[0]} = {columnid}"
         cur.execute(query)
@@ -11,7 +19,10 @@ def read_data(select = "*", table = "",columnid="" ,orderby = ""):
         result = data
     else:
         if orderby != "":
-            query = f"SELECT {select} FROM {table} ORDER BY {orderby}"
+            if join_tables and join_conditions:
+                query = f"SELECT {select} FROM {table} {join_clause} ORDER BY {orderby}"
+            else:
+                query = f"SELECT {select} FROM {table} ORDER BY {orderby}"
         else:
             query = f"SELECT {select} FROM {table}"
         cur.execute(query)

@@ -6,10 +6,17 @@ import main
 tabel_fasilitas = "fasilitas"
 tabel_jenis = "jenis_fasilitas"
 tabel_status_fasilitas = "status_fasilitas"
+# join_table = ["jenis_fasilitas jf"]
+# join_condition = ["jf.id_jenis_fasilitas = f.jenis_fasilitas_id"]
 
-def lihat_fasilitas(tabel_fasilitas):
+def lihat_fasilitas():
     # kolom = model.column_data(table=tabel_fasilitas, idenable=True)
-    data = model.read_data(table=tabel_fasilitas,orderby="id_fasilitas")
+    data = model.read_data(select="f.id_fasilitas, f.nama_fasilitas, jf.nama_jenis_fasilitas",
+                           table="fasilitas f",
+                           orderby="id_fasilitas",
+                           join_tables=["jenis_fasilitas jf"], 
+                           join_conditions=["jf.id_jenis_fasilitas = f.jenis_fasilitas_id"]
+    )
     # print(kolom)
     if data:
         print(f"{'ID':<5} {'Nama Fasilitas':<20} {'Jenis Fasilitas':<5}")
@@ -163,7 +170,7 @@ Menu :
 
         match input_user:
             case "1":
-                lihat_fasilitas(tabel_fasilitas)
+                lihat_fasilitas()
                 req = input('Klik ENTER untuk melanjutkan...')
                 core.clear()
             case "2":
