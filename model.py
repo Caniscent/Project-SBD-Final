@@ -3,7 +3,7 @@ import connection
 
 def read_data(select = "*", table = "",columnid="" ,orderby = "",join_tables=None, join_conditions=None):
     conn, cur = connection.connect()
-    column = column_data(table=table, idenable=1)
+    column = column_data(table=table, idenable=True)
 
     join_clause = ""
     if join_tables and join_conditions:
@@ -12,8 +12,8 @@ def read_data(select = "*", table = "",columnid="" ,orderby = "",join_tables=Non
             join_condition = join_conditions[i]
             join_clause += f"JOIN {join_table} ON {join_condition} "
 
-    if columnid != "":
-        query = f"SELECT {select} FROM {table} {join_table} WHERE {column[0]} = {columnid}"
+    if columnid !="":
+        query = f"SELECT {select} FROM {table} {join_clause} WHERE {column[0]} = {columnid} "
         cur.execute(query)
         data = cur.fetchone()
         result = data
@@ -30,7 +30,8 @@ def read_data(select = "*", table = "",columnid="" ,orderby = "",join_tables=Non
         result = []
         for i in data:
             result.append(i)
-
+    # print(query)
+    # exit()
     cur.close()
     conn.close()
     return result

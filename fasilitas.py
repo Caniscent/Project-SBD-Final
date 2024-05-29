@@ -57,7 +57,12 @@ def tambah_fasilitas(table_fasilitas, table_jenis):
 def hapus_fasilitas(tabel_fasilitas,tabel_status_fasilitas):
     while True:
         # kolom = model.column_data(table=tabel_fasilitas, idenable=True)
-        data = model.read_data(table=tabel_fasilitas,orderby="id_fasilitas")
+        data = model.read_data(select="f.id_fasilitas, f.nama_fasilitas, jf.nama_jenis_fasilitas",
+                               table="fasilitas f",
+                               orderby="id_fasilitas",
+                               join_tables=["jenis_fasilitas jf"], 
+                               join_conditions=["jf.id_jenis_fasilitas = f.jenis_fasilitas_id"],
+                               )
         if data:
             print(f"{'ID':<5} {'Nama Fasilitas':<20} {'Jenis Fasilitas':<5}")
             print("-" * 42)
@@ -72,7 +77,12 @@ def hapus_fasilitas(tabel_fasilitas,tabel_status_fasilitas):
             try:    
                 pilih_id = int(pilih_id)
                 if any(id_fasilitas == pilih_id for id_fasilitas, _, _ in data):
-                    data_column = model.read_data(table=tabel_fasilitas,columnid=pilih_id)
+                    data_column = model.read_data(select="fasilitas.id_fasilitas, fasilitas.nama_fasilitas, jf.nama_jenis_fasilitas",
+                                              table="fasilitas",
+                                              orderby="id_fasilitas",
+                                              join_tables=["jenis_fasilitas jf"], 
+                                              join_conditions=["jf.id_jenis_fasilitas = fasilitas.jenis_fasilitas_id"],
+                                              columnid=pilih_id)
                     print(f"""
 ID Fasilitas: {data_column[0]}
 Nama Fasilitas: {data_column[1]}
@@ -98,63 +108,67 @@ Jenis Fasilitas: {data_column[2]}
                 req = input('Klik ENTER untuk melanjutkan!')
                 core.clear()
                 continue
-
         else:
             core.clear()
             continue
     
 def update_fasilitas(tabel_fasilitas, tabel_jenis):
-    while True:
-        data = model.read_data(select="f.id_fasilitas, f.nama_fasilitas, jf.nama_jenis_fasilitas",
-                           table="fasilitas f",
-                           orderby="id_fasilitas",
-                           join_tables=["jenis_fasilitas jf"], 
-                           join_conditions=["jf.id_jenis_fasilitas = f.jenis_fasilitas_id"])
-        
-        data_jenis = model.read_data(table=tabel_jenis)
+    data = model.read_data(select="f.id_fasilitas, f.nama_fasilitas, jf.nama_jenis_fasilitas",
+                        table="fasilitas f",
+                        orderby="id_fasilitas",
+                        join_tables=["jenis_fasilitas jf"], 
+                        join_conditions=["jf.id_jenis_fasilitas = f.jenis_fasilitas_id"])
     
-        if data:
-            print(f"{'ID':<5} {'Nama Fasilitas':<20} {'Jenis Fasilitas':<5}")
-            print("-" * 42)
-            for row in data:
-                id_fasilitas, nama_fasilitas, jenis_fasilitas = row
-                print(f"{id_fasilitas:<5} {nama_fasilitas:<20} {jenis_fasilitas:<5}")
-        else:
-            print("Tidak ada data user yang tersedia.")
-        
-        pilih_id = input("Pilih ID  : ")
-        if pilih_id:
-            try:    
-                pilih_id = int(pilih_id)
-                if any(id_fasilitas == pilih_id for id_fasilitas, _, _ in data):
-                    print("Data yang anda pilih : ")
-                    data_column = model.read_data(table=tabel_fasilitas, columnid=pilih_id)
-                    print("Nama Fasilitas : "+data_column[1])
-                    print("ID Jenis : "+ str(data_column[2]))
-                    print("== Masukkan Data Baru ==")
-                    new_nama_fasilitas = input("Masukkan Nama Fasilitas Baru (Enter untuk skip) : ") or data[1]
-                    print(data_jenis)
-                    new_id_jenis_fasilitas = int(input("Masukkan ID Jenis (Enter untuk skip) : ") or str(data[2]))
-                    values = [new_nama_fasilitas, new_id_jenis_fasilitas]
-                    model.update_data(table=tabel_fasilitas, idcolomn=pilih_id, values=values)
-                    print("\n[Data sudah diperbarui!]")
-                    req = input('Klik ENTER untuk melanjutkan!')
-                    core.clear()
-                    break
-                    
-                else:
-                    print("\n[Data tidak ada!]")
-                    req = input('Klik ENTER untuk melanjutkan!')
-                    core.clear()
-                    continue
-            except ValueError:
-                print("\n[Id harus berupa angka saja!]")
+    data_jenis = model.read_data(table=tabel_jenis)
+
+    if data:
+        print(f"{'ID':<5} {'Nama Fasilitas':<20} {'Jenis Fasilitas':<5}")
+        print("-" * 42)
+        for row in data:
+            id_fasilitas, nama_fasilitas, jenis_fasilitas = row
+            print(f"{id_fasilitas:<5} {nama_fasilitas:<20} {jenis_fasilitas:<5}")
+    else:
+        print("Tidak ada data user yang tersedia.")
+    
+    pilih_id = input("Pilih ID  : ")
+    if pilih_id:
+        try:    
+            pilih_id = int(pilih_id)
+            if any(id_fasilitas == pilih_id for id_fasilitas, _, _ in data):
+                print("Data yang anda pilih : ")
+                data_column = model.read_data(select="fasilitas.nama_fasilitas, jf.nama_jenis_fasilitas",
+                                              table="fasilitas",
+                                              orderby="id_fasilitas",
+                                              join_tables=["jenis_fasilitas jf"], 
+                                              join_conditions=["jf.id_jenis_fasilitas = fasilitas.jenis_fasilitas_id"],
+                                              columnid=pilih_id)
+                # print(data_column)
+                print("Nama Fasilitas : "+data_column[0])
+                print("Jenis Jenis : "+data_column[1])
+                print("== Masukkan Data Baru ==")
+                new_nama_fasilitas = input("Masukkan Nama Fasilitas Baru (Enter untuk skip) : ") or data[1]
+                print(data_jenis)
+                new_id_jenis_fasilitas = int(input("Masukkan ID Jenis (Enter untuk skip) : ") or str(data[2]))
+                values = [new_nama_fasilitas, new_id_jenis_fasilitas]
+                model.update_data(table=tabel_fasilitas, idcolomn=pilih_id, values=values)
+                print("\n[Data sudah diperbarui!]")
                 req = input('Klik ENTER untuk melanjutkan!')
                 core.clear()
-                continue
-
-        else:
+                
+                
+            else:
+                print("\n[Data tidak ada!]")
+                req = input('Klik ENTER untuk melanjutkan!')
+                core.clear()
+                # continue
+        except ValueError:
+            print("\n[Id harus berupa angka saja!]")
+            req = input('Klik ENTER untuk melanjutkan!')
             core.clear()
+            # continue
+
+    else:
+        core.clear()
 
 
 def aksi_fasilitas():
