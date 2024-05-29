@@ -20,7 +20,11 @@ def aksi_users():
         admin = input("Masukkan nomor: ")
         match admin:
             case '1':
-                data = model.read_data(table="users",orderby="id_users")
+                data = model.read_data(select="u.id_users, u.nama_users, u.username, u.password, u.no_telepon_users, ju.nama_jenis_users",
+                                       table="users u",
+                                       orderby="id_users",
+                                       join_tables=["jenis_users ju"],
+                                       join_conditions=["u.jenis_users_id = ju.id_jenis_users"])
                 if data:
                     print(f"{'ID':<5} {'Nama User':<30} {'Username':<10} {'Password':<35} {'Nomor Telepon':<15} {'Jenis User':<5}")
                     print("-" * 110)

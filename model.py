@@ -19,7 +19,7 @@ def read_data(select = "*", table = "",columnid="" ,orderby = "",join_tables=Non
         result = data
     else:
         if orderby != "":
-            if join_tables and join_conditions:
+            if join_clause:
                 query = f"SELECT {select} FROM {table} {join_clause} ORDER BY {orderby}"
             else:
                 query = f"SELECT {select} FROM {table} ORDER BY {orderby}"
