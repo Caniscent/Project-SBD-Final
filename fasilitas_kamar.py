@@ -12,7 +12,11 @@ ColumnFasilitas = model.column_data(table=TabelFasilitas,idenable=True)
 
 def CreateFK():
     try:
-        pass
+        print("Menambah Data Baru: ")
+        DataKamar = model.read_data(table=TabelKamar)
+        for i in DataKamar:
+            print(i)
+        Id_Kamar = input("Masukkan ID Kamar: ")
     except:
         pass
     finally:
@@ -59,5 +63,4 @@ def AksiFasilitasKamar():
         pass
 
 if __name__ == "__main__":
-    # print(ColumnFK)
-    ReadFK()
+    pass
