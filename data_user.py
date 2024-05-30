@@ -10,15 +10,15 @@ def aksi_users():
     while True:
         core.clear()
         print('''
-[Pendataan Admin]
+[Pendataan User]
 1. Lihat Data User
 2. Tambah User
 3. Perbarui Data User
 4. Hapus Data User
 9. Kembali
     ''')
-        admin = input("Masukkan nomor: ")
-        match admin:
+        user = input("Masukkan nomor: ")
+        match user:
             case '1':
                 data = model.read_data(select="u.id_users, u.nama_users, u.username, u.password, u.no_telepon_users, ju.nama_jenis_users",
                                        table="users u",

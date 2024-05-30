@@ -2,9 +2,10 @@ import core
 import login
 import data_user
 import penghuni
-import fasilitas
-import kondisi_fasilitas
 import kamar
+import fasilitas
+import fasilitas_kamar
+import kondisi_fasilitas
 import pembayaran
 
 def mainmenu():
@@ -37,7 +38,7 @@ def mainmenu():
             case "6":
                 kamar.aksi_kamar()
             case "7":
-                pass
+                fasilitas_kamar.AksiFasilitasKamar()
             case '9':
                 print('Apakah Anda yakin ingin logout? (y/n)')
                 user = input(f"| > ")
