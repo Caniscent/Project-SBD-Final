@@ -139,7 +139,7 @@ def edit_penghuni():
 
         else:
             core.clear()
-            continue
+            break
         
 
 def hapus_penghuni():
@@ -188,13 +188,8 @@ def hapus_penghuni():
 
         else:
             core.clear()
-            continue
+            break
         
-
-        # read = model.read_data(table=table)
-        # for i in read:
-        #     print(i)
-
 def aksi_penghuni():
     while True:
         core.clear()
@@ -204,7 +199,7 @@ def aksi_penghuni():
 1. Lihat Data penghuni
 2. Menambah data penghuni
 3. Perbarui data penghuni
-4. Hapus dana penghuni 
+4. Hapus data penghuni 
 9. Kembali
     """)   
         input_usr = input("|> Pilih Menu: ")

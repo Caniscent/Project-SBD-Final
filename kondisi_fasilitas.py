@@ -226,7 +226,7 @@ Keterangan: {read[4]}\n
 
                     else:
                         core.clear()
-                        continue
+                        break
 
                     
 
@@ -281,7 +281,7 @@ Keterangan: {read[4]}\n
 
                     else:
                         core.clear()
-                        continue
+                        break
                     
 
             case '9':

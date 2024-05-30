@@ -129,7 +129,7 @@ Jenis Users Id: {data_column[5]}
 
                     else:
                         core.clear()
-                        continue
+                        break
 
             
             case '4':
@@ -182,7 +182,7 @@ Username: {data_column[2]}
                             continue
                     else:
                         core.clear()
-                        continue
+                        break
                     
                 
             case '9':

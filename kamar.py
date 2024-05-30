@@ -112,7 +112,7 @@ def ubah_kamar ():
 
         else:
             core.clear()
-            continue
+            break
         
 
 def hapus_kamar():
@@ -169,7 +169,7 @@ def hapus_kamar():
 
         else:
             core.clear()
-            continue
+            break
 
         
 # def tambah_kamar()

@@ -14,10 +14,6 @@ ColumnFasilitas = model.column_data(table=TabelFasilitas,idenable=True)
 
 def CreateFK():
     try:
-        # DataKamar = model.read_data(table=TabelKamar)
-        # for i in DataKamar:
-        #     print(i)
-        # Id_Kamar = input("Masukkan ID Kamar: ")
         while True:
             core.clear()
             print("Menambah Data Baru: ")
@@ -155,7 +151,7 @@ def UpdateFK():
 
             else:
                 core.clear()
-                continue
+                break
         
     except Exception as ex:
         print(f"Error: {ex}")
@@ -206,7 +202,7 @@ def DeleteFK():
 
             else:
                 core.clear()
-                continue
+                break
         
     except Exception as ex:
         print(f"Error: {ex}")

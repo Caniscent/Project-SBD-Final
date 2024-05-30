@@ -92,5 +92,5 @@ def menuadmin():
 
 if __name__ == "__main__":
     core.clear()
-    login.login()
+    # login.login()
     mainmenu()

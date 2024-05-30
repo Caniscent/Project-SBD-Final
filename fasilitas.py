@@ -110,7 +110,7 @@ Jenis Fasilitas: {data_column[2]}
                 continue
         else:
             core.clear()
-            continue
+            break
     
 def update_fasilitas(tabel_fasilitas, tabel_jenis):
     data = model.read_data(select="f.id_fasilitas, f.nama_fasilitas, jf.nama_jenis_fasilitas",

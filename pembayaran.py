@@ -123,7 +123,7 @@ def update_pembayaran():
 
         else:
             core.clear()
-            continue
+            break
     
 
 def hapus_pembayaran():
@@ -169,7 +169,7 @@ def hapus_pembayaran():
 
         else:
             core.clear()
-            continue
+            break
 
         
 
