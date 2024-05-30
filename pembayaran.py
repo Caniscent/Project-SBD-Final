@@ -31,6 +31,8 @@ def menambah_pembayaran():
         print('Klik ENTER untuk melanjutkan!')
         enter = input()
         core.clear()
+    
+    penghuni = int(penghuni)
 
     values = [tanggal_pembayaran, tenggat_pembayaran, id_penghuni]
     model.create_data(table=tabel,values=values)
@@ -135,13 +137,12 @@ def hapus_pembayaran():
                 id_column = int(kolom)
                 if any(id_pembayaran == id_column for id_pembayaran, _, _, _ in read):
                     data = model.read_data(table=tabel,columnid=kolom)
-                    data2 = model.read_data(table=tabel,columnid=data[3])
                     column = model.column_data(table=tabel,idenable=True)
-                    x = print("[Data yang ingin dihapus]")
+                    print("[Data yang ingin dihapus]")
                     print(f"ID Pembayaran: {data[0]}")
                     print(f"Tanggal Pembayaran: {data[1]}")
                     print(f"Tenggat Pembayaran: {data[2]}")
-                    print(f"Penghuni_id: {data2[1]}")
+                    print(f"ID Penghuni: {data[3]}")
                     req = input("Apakah anda yakin ingin menghapus? (Y/n)")
                     if req == 'Y' or req == 'y':
                         model.delete_data(table=tabel,idcolumn=id_column)
@@ -150,7 +151,7 @@ def hapus_pembayaran():
                         core.clear()
                         break
                     else:
-                        req = input("\n[Data penyewaan batal dihapus!]")
+                        input("\n[Data penyewaan batal dihapus!]")
                         req = input('Klik ENTER untuk melanjutkan!')  
                         core.clear()
                         break        

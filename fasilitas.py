@@ -25,7 +25,7 @@ def lihat_fasilitas():
             id_users, nama_fasilitas, jenis_fasilitas = row
             print(f"{id_users:<5} {nama_fasilitas:<20} {jenis_fasilitas:<5}")
     else:
-        print("Tidak ada data user yang tersedia.")
+        print("[Tidak ada data fasilitas yang tersedia]")
 
 def tambah_fasilitas(table_fasilitas, table_jenis):
     new_nama_fasilitas = input("Nama Fasilitas : ")
@@ -70,7 +70,7 @@ def hapus_fasilitas(tabel_fasilitas,tabel_status_fasilitas):
                 id_fasilitas, nama_fasilitas, jenis_fasilitas = row
                 print(f"{id_fasilitas:<5} {nama_fasilitas:<20} {jenis_fasilitas:<5}")
         else:
-            print("Tidak ada data user yang tersedia.")
+            print("[Tidak ada data user yang tersedia]")
 
         pilih_id = input("Pilih ID data (Nomor) : ")
         if pilih_id:
@@ -128,7 +128,7 @@ def update_fasilitas(tabel_fasilitas, tabel_jenis):
             id_fasilitas, nama_fasilitas, jenis_fasilitas = row
             print(f"{id_fasilitas:<5} {nama_fasilitas:<20} {jenis_fasilitas:<5}")
     else:
-        print("Tidak ada data user yang tersedia.")
+        print("[Tidak ada data user yang tersedia]")
     
     pilih_id = input("Pilih ID  : ")
     if pilih_id:
