@@ -6,16 +6,18 @@ import main
 tabel_fasilitas = "fasilitas"
 tabel_jenis = "jenis_fasilitas"
 tabel_status_fasilitas = "status_fasilitas"
-# join_table = ["jenis_fasilitas jf"]
-# join_condition = ["jf.id_jenis_fasilitas = f.jenis_fasilitas_id"]
+# join area
+select_table = "f.id_fasilitas, f.nama_fasilitas, jf.nama_jenis_fasilitas"
+join_table = ["jenis_fasilitas jf"]
+join_condition = ["jf.id_jenis_fasilitas = f.jenis_fasilitas_id"]
 
 def lihat_fasilitas():
     # kolom = model.column_data(table=tabel_fasilitas, idenable=True)
-    data = model.read_data(select="f.id_fasilitas, f.nama_fasilitas, jf.nama_jenis_fasilitas",
+    data = model.read_data(select=select_table,
                            table="fasilitas f",
                            orderby="id_fasilitas",
-                           join_tables=["jenis_fasilitas jf"], 
-                           join_conditions=["jf.id_jenis_fasilitas = f.jenis_fasilitas_id"]
+                           join_tables=join_table, 
+                           join_conditions=join_condition
     )
     # print(kolom)
     if data:
@@ -57,11 +59,11 @@ def tambah_fasilitas(table_fasilitas, table_jenis):
 def hapus_fasilitas(tabel_fasilitas,tabel_status_fasilitas):
     while True:
         # kolom = model.column_data(table=tabel_fasilitas, idenable=True)
-        data = model.read_data(select="f.id_fasilitas, f.nama_fasilitas, jf.nama_jenis_fasilitas",
+        data = model.read_data(select=select_table,
                                table="fasilitas f",
                                orderby="id_fasilitas",
-                               join_tables=["jenis_fasilitas jf"], 
-                               join_conditions=["jf.id_jenis_fasilitas = f.jenis_fasilitas_id"],
+                               join_tables=join_table, 
+                               join_conditions=join_condition,
                                )
         if data:
             print(f"{'ID':<5} {'Nama Fasilitas':<20} {'Jenis Fasilitas':<5}")
@@ -80,7 +82,7 @@ def hapus_fasilitas(tabel_fasilitas,tabel_status_fasilitas):
                     data_column = model.read_data(select="fasilitas.id_fasilitas, fasilitas.nama_fasilitas, jf.nama_jenis_fasilitas",
                                               table="fasilitas",
                                               orderby="id_fasilitas",
-                                              join_tables=["jenis_fasilitas jf"], 
+                                              join_tables=join_table, 
                                               join_conditions=["jf.id_jenis_fasilitas = fasilitas.jenis_fasilitas_id"],
                                               columnid=pilih_id)
                     print(f"""
@@ -113,11 +115,11 @@ Jenis Fasilitas: {data_column[2]}
             break
     
 def update_fasilitas(tabel_fasilitas, tabel_jenis):
-    data = model.read_data(select="f.id_fasilitas, f.nama_fasilitas, jf.nama_jenis_fasilitas",
+    data = model.read_data(select=select_table,
                         table="fasilitas f",
                         orderby="id_fasilitas",
-                        join_tables=["jenis_fasilitas jf"], 
-                        join_conditions=["jf.id_jenis_fasilitas = f.jenis_fasilitas_id"])
+                        join_tables=join_table, 
+                        join_conditions=join_condition)
     
     data_jenis = model.read_data(table=tabel_jenis)
 
@@ -139,7 +141,7 @@ def update_fasilitas(tabel_fasilitas, tabel_jenis):
                 data_column = model.read_data(select="fasilitas.nama_fasilitas, jf.nama_jenis_fasilitas",
                                               table="fasilitas",
                                               orderby="id_fasilitas",
-                                              join_tables=["jenis_fasilitas jf"], 
+                                              join_tables=join_table, 
                                               join_conditions=["jf.id_jenis_fasilitas = fasilitas.jenis_fasilitas_id"],
                                               columnid=pilih_id)
                 # print(data_column)
