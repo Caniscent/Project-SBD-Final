@@ -1,5 +1,9 @@
 import model
+import connection
+import datetime
 import core
+import main
+from dateutil.relativedelta import relativedelta
 
 table = "penghuni"
 
@@ -9,15 +13,22 @@ def new_penghuni():
         nama_penghuni = input("| Masukkan Nama Lengkap\t: ")
         no_telepon_penghuni = input("| Nomor Telepon\t: ")
         print("Format Tanggal = yyyy-mm-dd hh:mm:ss")
-        tanggal_masuk = input("| Tanggal Masuk\t: ")
+        tanggal_masuk = input("| Tanggal Masuk (enter for now)\t: ") or datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
         tanggal_keluar = input("| Tanggal Keluar(opsional)\t: ")
-        data_kamar = model.read_data(table="kamar")
+        data_kamar = model.read_data(select="k.*, tk.nama_tipe_kamar",
+                                     table="kamar k",
+                                     join_tables=["penghuni p", "tipe_kamar tk"],
+                                     join_conditions=["p.kamar_id = k.id_kamar", "k.tipe_kamar_id = tk.id_tipe_kamar"],
+                                     where="p.kamar_id IS NULL",
+                                     join_type="LEFT"
+                                     )
         if data_kamar:
-            print(f"{'ID':<5} {'Nomor Kamar':<12} {'Tipe Kamar':<10}")
-            print("-" * 36)
+            print(f"{'ID':<5} {'Nomor Kamar':<12} {'Tipe Kamar':<17}")
+            print("-" * 43)
             for row in data_kamar:
-                id_kamar, nomor_kamar, tipe_kamar_id = row
-                print(f"{id_kamar:<5} {nomor_kamar:<12} {tipe_kamar_id:<10}")
+                id_kamar, nomor_kamar = row[0:2]
+                tipe_kamar_id = row[3]
+                print(f"{id_kamar:<5} {nomor_kamar:<12} {tipe_kamar_id:<17}")
         else:
             print("[Tidak ada data kamar yang tersedia]")
         kamar_id = input("| Kamar\t: ")
@@ -31,7 +42,7 @@ def new_penghuni():
 
         data = model.read_data(table=table)
         data_ada = [cek[1] for cek in data]
-        kamar_ada = [cek[6] for cek in data]
+        # kamar_ada = [cek[6] for cek in data]
         # for cek in data[1:]:
         #     data_ada.append(cek[1])
         if nik_penghuni in data_ada:
@@ -41,12 +52,12 @@ def new_penghuni():
             core.clear()
             break
 
-        if kamar_id in kamar_ada:
-            print('\n[ KAMAR DENGAN ID INI SUDAH DIGUNAKAN PENGHUNI LAIN ]')
-            print('Klik ENTER untuk melanjutkan!')
-            enter = input()
-            core.clear()
-            break
+        # if kamar_id in kamar_ada:
+        #     print('\n[ KAMAR DENGAN ID INI SUDAH DIGUNAKAN PENGHUNI LAIN ]')
+        #     print('Klik ENTER untuk melanjutkan!')
+        #     enter = input()
+        #     core.clear()
+        #     break
 
 
         if tanggal_keluar:
