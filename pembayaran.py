@@ -48,34 +48,19 @@ def menambah_pembayaran():
     print("\n[ DATA BERHASIL DITAMBAHKAN ]")
     req = input('Klik ENTER untuk melanjutkan!')
     core.clear()
-    
-
-def read_join():
-    conn, cur = connection.connect()
-    column = model.column_data(table=tabel, idenable=1)
-
-    query_join = f"""
-SELECT pem.id_pembayaran, pem.tanggal_pembayaran, pem.tenggat_pembayaran, p.nama_penghuni
-from pembayaran pem
-join penghuni p on p.id_penghuni = penghuni_id
-ORDER BY {column[0]} ASC
-"""
-    
-    cur.execute(query_join)
-    result = cur.fetchall()
-    
-    cur.close()
-    conn.close()
-    return result
 
 def read_pembayaran():
-    data = read_join()
+    data = model.read_data(select="pem.*, peng.nama_penghuni",
+                           table="pembayaran pem",
+                           join_tables=["penghuni peng"],
+                           join_conditions=["pem.penghuni_id = peng.id_penghuni"],
+                           orderby="pem.id_pembayaran")
     if data:
-        print(f"{'ID':<5} {'Tanggal Pembayaran':<30} {'Tenggat Pembayaran':<30} {'Penghuni':<35}")
+        print(f"{'ID':<5} {'Tanggal Pembayaran':<30} {'Tenggat Pembayaran':<30} {'id_penghuni':<14} {'Penghuni':<35}")
         print("-" * 95)
         for row in data:
-            id_pembayaran, tanggal_pembayaran, tenggat_pembayaran, penghuni = row
-            print(f"{id_pembayaran:<5} {str(tanggal_pembayaran):<30} {str(tenggat_pembayaran):<30} {penghuni:<35}")
+            id_pembayaran, tanggal_pembayaran, tenggat_pembayaran, id_penghuni, penghuni = row
+            print(f"{id_pembayaran:<5} {str(tanggal_pembayaran):<30} {str(tenggat_pembayaran):<30} {id_penghuni:<14} {penghuni:<35}")
     else:
         print("[Tidak ada data yang tersedia]")
 
@@ -84,19 +69,21 @@ def update_pembayaran():
     while True:
         core.clear()
         read_pembayaran()
-        read = model.read_data(table=tabel,columnid=id)
-        id_column = input("Pilih ID pembayaran yang ingin diupdate: ")
+        # read = model.read_data(table=tabel,columnid=id)
+        id_column = int(input("Pilih ID pembayaran yang ingin diupdate: "))
+        read = model.read_data(table=tabel)
+
         if id_column:
             try:    
                 id_column = int(id_column)
                 if any(id_pembayaran == id_column for id_pembayaran, _, _, _ in read):
                     data = model.read_data(table=tabel,columnid=id_column)
-                    data_penghuni = model.read_data(table=tabel_penghuni,columnid=id_column)
+                    # data_penghuni = model.read_data(table=tabel_penghuni,columnid=read[3])
                     print("Data: ")
                     print(f"ID Pembayaran: {data[0]}")
                     print(f"Tanggal Pembayaran: {data[1]}")
                     print(f"Tenggat Pembayaran: {data[2]}")
-                    print(f"Penghuni: {data_penghuni[2]}")
+                    print(f"ID Penghuni: {data[3]}")
                     print('-'*30)
                     print(f"Update data: ")
                     tanggal_pembayaran = str(input("Masukkan tanggal pembayaran(YYYY/MM/DD HH:MM:SS): ") or data[1])
@@ -111,7 +98,7 @@ def update_pembayaran():
                             print(f"{id_penghuni:<5} {nik_penghuni:<20} {nama_penghuni:<30} {no_telepon_penghuni:<25} {str(tanggal_masuk):<25} {str(tanggal_keluar):<20} {kamar_id:<5}")
                     else:
                         print("[Tidak ada data penghuni yang tersedia]")
-                    penghuni_id = str(input("Masukkan ID Penghuni: ") or read[3])
+                    penghuni_id = str(input("Masukkan ID Penghuni: ") or read[3][0])
                     values = [tanggal_pembayaran,tenggat_pembayaran,penghuni_id]
                     model.update_data(table=tabel,idcolomn=id_column,values=values)
                     req = input("Data berhasil diupdate. Klik Enter untuk melanjutkan...")
@@ -138,8 +125,9 @@ def hapus_pembayaran():
     while True:
         core.clear()
         read_pembayaran()
-        read = model.read_data(table=tabel)
+        # read = model.read_data(table=tabel)
         kolom = input("Pilih ID yang ingin dihapus: ")
+        read = model.read_data(table=tabel)
         if kolom:
             try:    
                 id_column = int(kolom)

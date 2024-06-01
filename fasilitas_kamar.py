@@ -117,17 +117,25 @@ def UpdateFK():
         while True:
             core.clear()
             ReadFK()
-            read = model.read_data(table=TabelFK)
-            id_fk = input("Masukkan ID Fasilitas Kamar: ")
-            if id_fk:
-                try:    
-                    id_column = int(id_fk)
-                    if any(read[0] == id_column for read[0], _, _ in read):
-                        dataFK = model.read_data(table=TabelFK,columnid=id_column)
+            # read = model.read_data(table=TabelFK)
+            id_fk = int(input("Masukkan ID Fasilitas Kamar: "))
+            read = model.read_data(select="fasilitas_kamar.*, k.nomor_kamar, f.nama_fasilitas",
+                                    table="fasilitas_kamar",
+                                    join_tables=["kamar k","fasilitas f"],
+                                    join_conditions=["fasilitas_kamar.kamar_id = k.id_kamar",
+                                                    "fasilitas_kamar.fasilitas_id = f.id_fasilitas"], 
+                                    columnid=id_fk)
+            # print(read)
+            # cekkk = input("apa............")
+            if read:
+                try:
+                    # id_column = int(id_fk)
+                    if read:
+                        # dataFK = model.read_data(table=TabelFK,columnid=id_column)
                         print("Data saat ini: ")
-                        print(f"ID Fasilitas Kamar: {dataFK[0]}")
-                        print(f"Nomor Kamar: {dataFK[1]}")
-                        print(f"Fasilitas: {dataFK[2]}")
+                        print(f"ID Fasilitas Kamar: {read[0]}")
+                        print(f"Nomor Kamar: {read[3]}")
+                        print(f"Fasilitas: {read[4]}")
                         print("\nUbah Data: ")
                         data_kamar = model.read_data(table=TabelKamar)
                         if data_kamar:
@@ -138,19 +146,29 @@ def UpdateFK():
                                 print(f"{id_fasilitas_kamar:<5} {nomor_kamar:<12} {nama_fasilitas:<25}")
                         else:
                             print("[Tidak ada data kamar yang tersedia]")
-                        nomor_kamar = input(f"Masukkan ID Kamar: ") or dataFK[1]
+                        nomor_kamar = input(f"Masukkan ID Kamar: ") or read[1]
                         
-                        data_fasilitas = model.read_data(table=TabelFasilitas)
+                        data_fasilitas = model.read_data(select="f.id_fasilitas, f.nama_fasilitas, fk.id_fasilitas_kamar",
+                                                        table="fasilitas f",
+                                                        orderby="f.id_fasilitas",
+                                                        join_tables=["fasilitas_kamar fk"], 
+                                                        join_conditions=["f.id_fasilitas = fk.fasilitas_id"],
+                                                        where="fk.fasilitas_id IS NULL AND f.jenis_fasilitas_id = 1",
+                                                        join_type="LEFT")
                         if data_fasilitas:
-                            print(f"{'ID':<5} {'Nama Fasilitas':<20} {'Jenis Fasilitas':<5}")
-                            print("-" * 42)
+                            print("udah true")
+                            print(f"{'ID':<5} {'Nama Fasilitas':<20}")
+                            print("-" * 25)
                             for row in data_fasilitas:
-                                id_users, nama_fasilitas, jenis_fasilitas = row
-                                print(f"{id_users:<5} {nama_fasilitas:<20} {jenis_fasilitas:<5}")
+                                id_users, nama_fasilitas = row[0:2]
+                                print(f"{id_users:<5} {nama_fasilitas:<20}")
+                            nama_fasilitas = input(f"Masukkan ID Fasilitas: ") or read[2]
                         else:
                             print("Tidak ada data user yang tersedia.")
-                        nama_fasilitas = input(f"Masukkan ID Fasilitas: ") or dataFK[2]
-                        values = [nomor_kamar,nama_fasilitas]
+                        # print(list(data_fasilitas[0]))
+                        # nama_fasilitas = input(f"Masukkan ID Fasilitas: ") or read[2]
+                        # cekk = input("bentar..... : ")
+                        values = [int(nomor_kamar),int(nama_fasilitas)]
                         model.update_data(table=TabelFK,idcolomn=id_fk,values=values)
                         req = input("Data berhasil diupdate. Klik Enter untuk melanjutkan...")
                         core.clear()
@@ -169,6 +187,7 @@ def UpdateFK():
 
             else:
                 core.clear()
+                # cekkk
                 break
         
     except Exception as ex:
@@ -186,11 +205,11 @@ def DeleteFK():
                     id_column = int(id_fk)
                     if any(read[0] == id_column for read[0], _, _ in read):
                         data = model.read_data(select=f"{TabelFK}.{ColumnFK[0]},{TabelKamar}.{ColumnKamar[1]},{TabelFasilitas}.{ColumnFasilitas[1]}",
-                                table=TabelFK,
-                                join_tables=[TabelKamar,TabelFasilitas],
-                                join_conditions=[f"{TabelKamar}.{ColumnKamar[0]} = {TabelFK}.{ColumnFK[1]}",
+                                                table=TabelFK,
+                                                join_tables=[TabelKamar,TabelFasilitas],
+                                                join_conditions=[f"{TabelKamar}.{ColumnKamar[0]} = {TabelFK}.{ColumnFK[1]}",
                                                 f"{TabelFasilitas}.{ColumnFasilitas[0]} = {TabelFK}.{ColumnFK[2]}"],
-                                columnid=id_column)
+                                                columnid=id_column)
                         print("[Data yang ingin dihapus]")
                         print(f"ID Fasilitas Kamar: {data[0]}")
                         print(f"Nomor Kamar: {data[1]}")

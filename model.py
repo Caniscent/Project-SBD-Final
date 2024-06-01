@@ -101,7 +101,7 @@ def update_data(table,idcolomn,values):
     
     query = f"""
     UPDATE {table} SET {",".join(data)} 
-    WHERE {column[0]} = {idcolomn}
+    WHERE {column[0]} = {int(idcolomn)}
     """
     cur.execute(query,tuple(values))
     conn.commit()
