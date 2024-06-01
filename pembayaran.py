@@ -15,6 +15,7 @@ def menambah_pembayaran():
     lama_sewa = int(input("Masukkan lama sewa (bulan) : "))
     tenggat_pembayaran = datetime.datetime.now() + relativedelta(months=+lama_sewa)
     tenggat_pembayaran = tenggat_pembayaran.strftime('%Y-%m-%d %H:%M:%S')
+    # model.loading_animation()
     penghuni = model.read_data(table=tabel_penghuni)
     if penghuni:
         print(f"{'ID':<5} {'NIK Penghuni':<20} {'Nama Penghuni':<30} {'Nomor Telepon Penghuni':<25} {'Tanggal Masuk':<25} {'Tanggal keluar':<20} {'Kamar ID':<5}")
@@ -25,7 +26,15 @@ def menambah_pembayaran():
     else:
         print("[Tidak ada data penghuni yang tersedia]")
     id_penghuni = input("Masukkan ID Penghuni: ")
-
+    # print(f"menghitung pembayaran...{model.loading_animation()}")
+    model.loading_animation()
+    read_harga = model.read_data(select="k.id_kamar, tk.harga",
+                                        table="penghuni p",
+                                        join_tables=["kamar k", "tipe_kamar tk"],
+                                        join_conditions=["p.kamar_id = k.id_kamar", "tk.id_tipe_kamar = k.tipe_kamar_id"],
+                                        where=f"k.id_kamar = {[i[6] for i in penghuni if i[0] == int(id_penghuni)][0]}")
+    harga_kamar = read_harga[0]
+    print(f"Total Pembayaran = {int(harga_kamar[1]) * int(lama_sewa)}")
     if not (tanggal_pembayaran and tenggat_pembayaran and penghuni):
         print('\n[ DATA TIDAK LENGKAP ]')
         print('Klik ENTER untuk melanjutkan!')
@@ -58,7 +67,6 @@ ORDER BY {column[0]} ASC
     cur.close()
     conn.close()
     return result
-
 
 def read_pembayaran():
     data = read_join()

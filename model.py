@@ -1,5 +1,8 @@
 import psycopg2
 import connection
+import sys
+import time
+import itertools
 
 def read_data(select = "*", table = "",columnid="" ,orderby = "",join_tables=None, join_conditions=None, where=None, join_type=None):
     conn, cur = connection.connect()
@@ -187,3 +190,15 @@ def column_data(table,idenable=0):
 # read = read_data(table=table)
 # for i in read:
 #     print(i)
+
+def loading_animation(duration = 5):
+    # Simbol yang digunakan untuk animasi
+    symbols = itertools.cycle(['|', '/', '-', '\\'])
+    end_time = time.time() + duration
+    while time.time() < end_time:
+        sys.stdout.write('\r' + next(symbols))
+        sys.stdout.flush()
+        time.sleep(0.1)  # Sesuaikan kecepatan animasi (dalam detik)
+
+    # Hapus animasi setelah selesai
+    sys.stdout.write('\r')

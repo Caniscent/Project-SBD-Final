@@ -7,18 +7,18 @@ tabel_kamar="kamar"
 tabel_penghuni="penghuni"
 
 def baca_kamar ():
-    data = model.read_data(select="k.id_kamar, k.nomor_kamar, tk.nama_tipe_kamar",
+    data = model.read_data(select="k.id_kamar, k.nomor_kamar, tk.nama_tipe_kamar, tk.harga",
                            table="kamar k",
                            orderby="id_kamar",
                            join_tables=["tipe_kamar tk"],
                            join_conditions=["k.tipe_kamar_id = tk.id_tipe_kamar"])
     
     if data:
-        print(f"{'ID':<5} {'Nomor Kamar':<12} {'Tipe Kamar':<10}")
-        print("-" * 36)
+        print(f"{'ID':<5} {'Nomor Kamar':<12} {'Tipe Kamar':<19} {'Harga Kamar':<10}")
+        print("-" * 50)
         for row in data:
-            id_kamar, nomor_kamar, tipe_kamar_id = row
-            print(f"{id_kamar:<5} {nomor_kamar:<12} {tipe_kamar_id:<10}")
+            id_kamar, nomor_kamar, tipe_kamar_id, harga_kamar = row
+            print(f"{id_kamar:<5} {nomor_kamar:<12} {tipe_kamar_id:<19} {harga_kamar:<10}")
     else:
         print("[Tidak ada data kamar yang tersedia]")
 
