@@ -19,7 +19,11 @@ def CreateFK():
         while True:
             core.clear()
             print("Menambah Data Baru: ")
-            data_kamar = model.read_data(table=TabelKamar)
+            data_kamar = model.read_data(select="k.id_kamar, k.nomor_kamar, tk.nama_tipe_kamar",
+                                         table="kamar k",
+                                         join_tables=["tipe_kamar tk"],
+                                         join_conditions=["k.tipe_kamar_id = tk.id_tipe_kamar"],
+                                         orderby="k.id_kamar")
             if data_kamar:
                 print(f"{'ID':<5} {'Nomor Kamar':<12} {'Tipe Kamar':<10}")
                 print("-" * 36)
@@ -28,24 +32,27 @@ def CreateFK():
                     print(f"{id_kamar:<5} {nomor_kamar:<12} {tipe_kamar_id:<10}")
             else:
                 print("[Tidak ada data kamar yang tersedia]")
-            id_kamar = int(input("Masukkan ID kamar: "))
-            data_fasilitas = model.read_data(select="fasilitas.id_fasilitas, fasilitas.nama_fasilitas, jf.nama_jenis_fasilitas",
-                                              table="fasilitas",
-                                              orderby="id_fasilitas",
-                                              join_tables=["jenis_fasilitas jf"], 
-                                              join_conditions=["fasilitas.jenis_fasilitas_id = jf.id_jenis_fasilitas"],
-                                              where="jf.id_jenis_fasilitas = 1")
+            id_kamar = input("Masukkan ID kamar: ")
+            data_fasilitas = model.read_data(select="f.id_fasilitas, f.nama_fasilitas, fk.id_fasilitas_kamar",
+                                              table="fasilitas f",
+                                              orderby="f.id_fasilitas",
+                                              join_tables=["fasilitas_kamar fk"], 
+                                              join_conditions=["f.id_fasilitas = fk.fasilitas_id"],
+                                              where="fk.fasilitas_id IS NULL AND f.jenis_fasilitas_id = 1",
+                                              join_type="LEFT")
             if data_fasilitas:
                 print(f"{'ID':<5} {'Nama Fasilitas':<20}")
-                print("-" * 30)
+                print("-" * 25)
                 for row in data_fasilitas:
                     id_users, nama_fasilitas = row[0:2]
                     print(f"{id_users:<5} {nama_fasilitas:<20}")
+                id_fasilitas = input("Masukkan ID Fasilitas: ")
             else:
                 print("[Tidak ada data fasilitas yang tersedia]")
-
-            id_fasilitas = input("Masukkan ID Fasilitas: ")
-            
+                print('Klik ENTER untuk melanjutkan!')
+                enter = input()
+                core.clear()
+                break            
 
             if not (id_kamar and id_fasilitas):
                 print('\n[ DATA TIDAK LENGKAP ]')
@@ -62,21 +69,21 @@ def CreateFK():
             #                                   orderby="id_fasilitas",
             #                                   join_tables=join_table, 
             #                                   join_conditions=["jf.id_jenis_fasilitas = fasilitas.jenis_fasilitas_id"])  
-            data_jenis = [cek[2] for cek in data_fasilitas if cek[2].lower() == "umum"]
-            if data_jenis:
-                print('\n[ JENIS FASILITAS INI BUKAN FASILITAS KAMAR ]')
-                print('Klik ENTER untuk melanjutkan!')
-                enter = input()
-                core.clear()
-                break
+            # data_jenis = [cek[2] for cek in data_fasilitas if cek[2].lower() == "umum"]
+            # if data_jenis:
+            #     print('\n[ JENIS FASILITAS INI BUKAN FASILITAS KAMAR ]')
+            #     print('Klik ENTER untuk melanjutkan!')
+            #     enter = input()
+            #     core.clear()
+            #     break
 
-            data_fasilitas_id = [cek[0] for cek in data_fasilitas if int(cek[0])==id_fasilitas]
-            if data_fasilitas_id:
-                print('\n[ FASILITAS INI SUDAH DIGUNAKAN ]')
-                print('Klik ENTER untuk melanjutkan!')
-                enter = input()
-                core.clear()
-                break
+            # data_fasilitas_id = [cek[2] for cek in data_fasilitas if int(cek[2])==id_fasilitas]
+            # if data_fasilitas_id:
+            #     print('\n[ FASILITAS INI SUDAH DIGUNAKAN ]')
+            #     print('Klik ENTER untuk melanjutkan!')
+            #     enter = input()
+            #     core.clear()
+            #     break
             values = [id_kamar, id_fasilitas]
             model.create_data(table = TabelFK, values= values)
             print("\n[ DATA BERHASIL DITAMBAHKAN ]")
@@ -86,7 +93,6 @@ def CreateFK():
 
     except Exception as ex:
         print(f"Error: {ex}")
-
 
 def ReadFK():
     try:

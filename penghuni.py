@@ -73,6 +73,8 @@ def data_penghuni():
         for row in read:
             id_penghuni, nik_penghuni, nama_penghuni, no_telepon_penghuni, tanggal_masuk, tanggal_keluar, kamar_id = row
             print(f"{id_penghuni:<5} {nik_penghuni:<20} {nama_penghuni:<30} {no_telepon_penghuni:<25} {str(tanggal_masuk):<25} {str(tanggal_keluar):<20} {kamar_id:<5}")
+        req = input('Klik ENTER untuk melanjutkan!')
+        core.clear()
     else:
         print("[Tidak ada data penghuni yang tersedia]")
     req = input("")

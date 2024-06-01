@@ -32,7 +32,7 @@ def menambah_pembayaran():
         enter = input()
         core.clear()
     
-    penghuni = int(penghuni)
+    # penghuni = int(penghuni)
 
     values = [tanggal_pembayaran, tenggat_pembayaran, id_penghuni]
     model.create_data(table=tabel,values=values)
@@ -83,7 +83,7 @@ def update_pembayaran():
                 id_column = int(id_column)
                 if any(id_pembayaran == id_column for id_pembayaran, _, _, _ in read):
                     data = model.read_data(table=tabel,columnid=id_column)
-                    data_penghuni = model.read_data(table=tabel_penghuni,columnid=data[3])
+                    data_penghuni = model.read_data(table=tabel_penghuni,columnid=id_column)
                     print("Data: ")
                     print(f"ID Pembayaran: {data[0]}")
                     print(f"Tanggal Pembayaran: {data[1]}")
@@ -103,7 +103,7 @@ def update_pembayaran():
                             print(f"{id_penghuni:<5} {nik_penghuni:<20} {nama_penghuni:<30} {no_telepon_penghuni:<25} {str(tanggal_masuk):<25} {str(tanggal_keluar):<20} {kamar_id:<5}")
                     else:
                         print("[Tidak ada data penghuni yang tersedia]")
-                    penghuni_id = str(input("Masukkan ID Penghuni: ") or data[3])
+                    penghuni_id = str(input("Masukkan ID Penghuni: ") or read[3])
                     values = [tanggal_pembayaran,tenggat_pembayaran,penghuni_id]
                     model.update_data(table=tabel,idcolomn=id_column,values=values)
                     req = input("Data berhasil diupdate. Klik Enter untuk melanjutkan...")
@@ -191,6 +191,7 @@ Menu :
 
         match input_user:
             case "1":
+                core.clear()
                 read_pembayaran()
                 req = input("Klik ENTER untuk melanjutkan...")
             case "2":

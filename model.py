@@ -1,7 +1,7 @@
 import psycopg2
 import connection
 
-def read_data(select = "*", table = "",columnid="" ,orderby = "",join_tables=None, join_conditions=None, where=None):
+def read_data(select = "*", table = "",columnid="" ,orderby = "",join_tables=None, join_conditions=None, where=None, join_type=None):
     conn, cur = connection.connect()
     column = column_data(table=table, idenable=True)
     Where = f"WHERE {where}"
@@ -9,9 +9,10 @@ def read_data(select = "*", table = "",columnid="" ,orderby = "",join_tables=Non
     join_clause = ""
     if join_tables and join_conditions:
         for i in range(len(join_tables)):
-            # join_table = join_tables[i]
-            # join_condition = join_conditions[i]
-            join_clause += f"JOIN {join_tables[i]} ON {join_conditions[i]} "
+            if join_type:
+                join_clause += f"{join_type} JOIN {join_tables[i]} ON {join_conditions[i]} "
+            else:
+                join_clause += f"JOIN {join_tables[i]} ON {join_conditions[i]} "
 
     if columnid !="":
         query = f"SELECT {select} FROM {table} {join_clause} WHERE {column[0]} = {columnid} "
@@ -38,7 +39,7 @@ def read_data(select = "*", table = "",columnid="" ,orderby = "",join_tables=Non
         result = []
         for i in data:
             result.append(i)
-    print(query)
+    # print(query)
     # exit()
     cur.close()
     conn.close()
