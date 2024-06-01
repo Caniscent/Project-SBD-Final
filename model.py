@@ -1,16 +1,17 @@
 import psycopg2
 import connection
 
-def read_data(select = "*", table = "",columnid="" ,orderby = "",join_tables=None, join_conditions=None):
+def read_data(select = "*", table = "",columnid="" ,orderby = "",join_tables=None, join_conditions=None, where=None):
     conn, cur = connection.connect()
     column = column_data(table=table, idenable=True)
+    Where = f"WHERE {where}"
 
     join_clause = ""
     if join_tables and join_conditions:
         for i in range(len(join_tables)):
-            join_table = join_tables[i]
-            join_condition = join_conditions[i]
-            join_clause += f"JOIN {join_table} ON {join_condition} "
+            # join_table = join_tables[i]
+            # join_condition = join_conditions[i]
+            join_clause += f"JOIN {join_tables[i]} ON {join_conditions[i]} "
 
     if columnid !="":
         query = f"SELECT {select} FROM {table} {join_clause} WHERE {column[0]} = {columnid} "
@@ -19,18 +20,25 @@ def read_data(select = "*", table = "",columnid="" ,orderby = "",join_tables=Non
         result = data
     else:
         if orderby != "":
-            if join_clause:
-                query = f"SELECT {select} FROM {table} {join_clause} ORDER BY {orderby}"
+            if join_tables and join_conditions:
+                if where:
+                    query = f"SELECT {select} FROM {table} {join_clause} {Where} ORDER BY {orderby}"
+                else:
+                    query = f"SELECT {select} FROM {table} {join_clause} ORDER BY {orderby}"
             else:
                 query = f"SELECT {select} FROM {table} ORDER BY {orderby}"
         else:
-            query = f"SELECT {select} FROM {table} {join_clause}"
+            if where:
+                query = f"SELECT {select} FROM {table} {join_clause} {Where}"
+            else:
+                query = f"SELECT {select} FROM {table} {join_clause}"
+            # query = f"SELECT {select} FROM {table} {join_clause}"
         cur.execute(query)
         data = cur.fetchall()
         result = []
         for i in data:
             result.append(i)
-    # print(query)
+    print(query)
     # exit()
     cur.close()
     conn.close()
