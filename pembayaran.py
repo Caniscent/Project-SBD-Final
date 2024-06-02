@@ -11,23 +11,25 @@ tabel_penghuni = "penghuni"
 def menambah_pembayaran():
     print(f"[Menambah data baru]")
     tanggal_pembayaran = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-    # tanggal_pembayaran = input("Masukkan tanggal pembayaran (enter untuk today) :" or tanggal_pembayaran)
     lama_sewa = int(input("Masukkan lama sewa (bulan) : "))
     tenggat_pembayaran = datetime.datetime.now() + relativedelta(months=+lama_sewa)
     tenggat_pembayaran = tenggat_pembayaran.strftime('%Y-%m-%d %H:%M:%S')
-    # model.loading_animation()
-    penghuni = model.read_data(table=tabel_penghuni)
+    penghuni = model.read_data(select="p.*, k.nomor_kamar",
+                           table="penghuni p",
+                           join_tables=["kamar k"],
+                           join_conditions=["p.kamar_id = k.id_kamar"],
+                           orderby="id_penghuni")
     if penghuni:
-        print(f"{'ID':<5} {'NIK Penghuni':<20} {'Nama Penghuni':<30} {'Nomor Telepon Penghuni':<25} {'Tanggal Masuk':<25} {'Tanggal keluar':<20} {'Kamar ID':<5}")
+        print(f"{'ID':<5} {'NIK Penghuni':<20} {'Nama Penghuni':<30} {'Nomor Telepon Penghuni':<25} {'Tanggal Masuk':<25} {'Tanggal keluar':<20} {'Kamar':<5}")
         print("-" * 140)
         for row in penghuni:
-            id_penghuni, nik_penghuni, nama_penghuni, no_telepon_penghuni, tanggal_masuk, tanggal_keluar, kamar_id = row
+            id_penghuni, nik_penghuni, nama_penghuni, no_telepon_penghuni, tanggal_masuk = row[0:5] 
+            tanggal_keluar = "Masih Aktif" if row[5]==None else row[5]
+            kamar_id = row[7]
             print(f"{id_penghuni:<5} {nik_penghuni:<20} {nama_penghuni:<30} {no_telepon_penghuni:<25} {str(tanggal_masuk):<25} {str(tanggal_keluar):<20} {kamar_id:<5}")
     else:
         print("[Tidak ada data penghuni yang tersedia]")
     id_penghuni = input("Masukkan ID Penghuni: ")
-    # print(f"menghitung pembayaran...{model.loading_animation()}")
-    model.loading_animation()
     read_harga = model.read_data(select="k.id_kamar, tk.harga",
                                         table="penghuni p",
                                         join_tables=["kamar k", "tipe_kamar tk"],
@@ -41,8 +43,6 @@ def menambah_pembayaran():
         enter = input()
         core.clear()
     
-    # penghuni = int(penghuni)
-
     values = [tanggal_pembayaran, tenggat_pembayaran, id_penghuni]
     model.create_data(table=tabel,values=values)
     print("\n[ DATA BERHASIL DITAMBAHKAN ]")
@@ -69,7 +69,6 @@ def update_pembayaran():
     while True:
         core.clear()
         read_pembayaran()
-        # read = model.read_data(table=tabel,columnid=id)
         id_column = int(input("Pilih ID pembayaran yang ingin diupdate: "))
         read = model.read_data(table=tabel)
 
@@ -78,7 +77,6 @@ def update_pembayaran():
                 id_column = int(id_column)
                 if any(id_pembayaran == id_column for id_pembayaran, _, _, _ in read):
                     data = model.read_data(table=tabel,columnid=id_column)
-                    # data_penghuni = model.read_data(table=tabel_penghuni,columnid=read[3])
                     print("Data: ")
                     print(f"ID Pembayaran: {data[0]}")
                     print(f"Tanggal Pembayaran: {data[1]}")
@@ -89,16 +87,23 @@ def update_pembayaran():
                     tanggal_pembayaran = str(input("Masukkan tanggal pembayaran(YYYY/MM/DD HH:MM:SS): ") or data[1])
                     tenggat_pembayaran = str(input("Masukkan tenggat pembayaran(YYYY/MM/DD HH:MM:SS): ") or data[2])
                     print(f"Data Penghuni: ")
-                    penghuni = model.read_data(table=tabel_penghuni,orderby="id_penghuni") 
-                    if penghuni:
-                        print(f"{'ID':<5} {'NIK Penghuni':<20} {'Nama Penghuni':<30} {'Nomor Telepon Penghuni':<25} {'Tanggal Masuk':<25} {'Tanggal keluar':<20} {'Kamar ID':<5}")
+                    read = model.read_data(select="p.*, k.nomor_kamar",
+                           table="penghuni p",
+                           join_tables=["kamar k"],
+                           join_conditions=["p.kamar_id = k.id_kamar"],
+                           orderby="id_penghuni")
+                    if read:
+                        print(f"{'ID':<5} {'NIK Penghuni':<20} {'Nama Penghuni':<30} {'Nomor Telepon Penghuni':<25} {'Tanggal Masuk':<25} {'Tanggal keluar':<20} {'Kamar':<5}")
                         print("-" * 140)
-                        for row in penghuni:
-                            id_penghuni, nik_penghuni, nama_penghuni, no_telepon_penghuni, tanggal_masuk, tanggal_keluar, kamar_id = row
+                        for row in read:
+                            id_penghuni, nik_penghuni, nama_penghuni, no_telepon_penghuni, tanggal_masuk = row[0:5] 
+                            tanggal_keluar = "Masih Aktif" if row[5]==None else row[5]
+                            kamar_id = row[7]
                             print(f"{id_penghuni:<5} {nik_penghuni:<20} {nama_penghuni:<30} {no_telepon_penghuni:<25} {str(tanggal_masuk):<25} {str(tanggal_keluar):<20} {kamar_id:<5}")
                     else:
                         print("[Tidak ada data penghuni yang tersedia]")
-                    penghuni_id = str(input("Masukkan ID Penghuni: ") or read[3][0])
+
+                    penghuni_id = int(input("Masukkan ID Penghuni: ") or data[3])
                     values = [tanggal_pembayaran,tenggat_pembayaran,penghuni_id]
                     model.update_data(table=tabel,idcolomn=id_column,values=values)
                     req = input("Data berhasil diupdate. Klik Enter untuk melanjutkan...")
@@ -125,7 +130,6 @@ def hapus_pembayaran():
     while True:
         core.clear()
         read_pembayaran()
-        # read = model.read_data(table=tabel)
         kolom = input("Pilih ID yang ingin dihapus: ")
         read = model.read_data(table=tabel)
         if kolom:
